@@ -13,6 +13,7 @@ public class Editor : MonoBehaviour
 {
     public editState _state;
     public GameObject QFloorPrefab;
+    public GameObject CubePrefab;
     private Qubit[,,] _grid;
     private int size; // number of rows/columns
     
@@ -48,9 +49,11 @@ public class Editor : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    private void PlaceQubit()
+    public void PlaceQubit(Vector3 position)
     {
-        throw new NotImplementedException();
+        Transform parent = GameObject.Find("QBlocks").GetComponent<Transform>();
+        var newCube = Instantiate(CubePrefab, parent);
+        newCube.transform.position = position;
     }
     
     /*
@@ -60,6 +63,16 @@ public class Editor : MonoBehaviour
     private void Verify()
     {
         throw new NotImplementedException();
+    }
+
+    public editState GetState()
+    {
+        return _state;
+    }
+
+    public void SetState(editState state)
+    {
+        _state = state;
     }
 }
 
