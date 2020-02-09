@@ -34,7 +34,7 @@ public class RotationRing : MonoBehaviour
         if (_isDrag)
         {
             float rotAngle = (_dragLast.x - Input.mousePosition.x);
-            _camera.GetComponent<Transform>().RotateAround(new Vector3(70, 0, 70), new Vector3(0, 1, 0), rotAngle);
+            _camera.GetComponent<Transform>().RotateAround(new Vector3(70, 0, 70), new Vector3(0, 1, 0), -rotAngle);
             _dragLast = Input.mousePosition;
         }
     }
