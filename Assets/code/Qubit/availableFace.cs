@@ -52,54 +52,58 @@ public class availableFace : MonoBehaviour
         
         GameObject editor_object = GameObject.Find("Editor");
         Editor editor = editor_object.GetComponent<Editor>();
-        if( this.transform.parent.name == "QFloor(Clone)" ) {
-            String clicked_object = this.transform.parent.name;
-            if (clicked_object == "QFloor(Clone)" || clicked_object == "QFloor (1)")
-                editor.PlaceQubit(_transform.position + Vector3.up*5f);
-            else if (clicked_object == "QFloor (5)")
-                editor.PlaceQubit(new Vector3(_transform.position.x, _transform.position.y ,
-                    _transform.position.z - 5));
-            else if (clicked_object == "QFloor (2)")
-                editor.PlaceQubit(new Vector3(_transform.position.x + 5, _transform.position.y - 5,
-                    _transform.position.z));
-            else if (clicked_object == "QFloor (3)")
-                editor.PlaceQubit(new Vector3(_transform.position.x - 5, _transform.position.y - 5,
-                    _transform.position.z));
-            else if (clicked_object == "QFloor (4)")
-                editor.PlaceQubit(new Vector3(_transform.position.x, _transform.position.y - 5,
-                    _transform.position.z + 5));
-        }
-        else
-        {
-            Vector3 newPos = transform.position;
-            float dPos = 5f;
-            switch (transform.name)
+        editState state = editor.GetState();
+        if(state == editState.Create) {
+            if (this.transform.parent.name == "QFloor(Clone)")
             {
-                case "availableFront":
-                    newPos.x += dPos;
-                    break;
-                case "availableBack":
-                    newPos.x -= dPos;
-                    break;
-                case "availableTop":
-                    newPos.y += dPos;
-                    break;
-                case "availableBottom":
-                    newPos.y -= dPos;
-                    break;
-                case "availableSide2":
-                    newPos.z += dPos;
-                    break;
-                case "availableSide1":
-                    newPos.z -= dPos;
-                    break;
-                default:
-                    Debug.LogWarning("Bad Face Name, No Qubit Placed");
-                    return;
+                String clicked_object = this.transform.parent.name;
+                if (clicked_object == "QFloor(Clone)" || clicked_object == "QFloor (1)")
+                    editor.PlaceQubit(_transform.position + Vector3.up * 5f);
+                else if (clicked_object == "QFloor (5)")
+                    editor.PlaceQubit(new Vector3(_transform.position.x, _transform.position.y,
+                        _transform.position.z - 5));
+                else if (clicked_object == "QFloor (2)")
+                    editor.PlaceQubit(new Vector3(_transform.position.x + 5, _transform.position.y - 5,
+                        _transform.position.z));
+                else if (clicked_object == "QFloor (3)")
+                    editor.PlaceQubit(new Vector3(_transform.position.x - 5, _transform.position.y - 5,
+                        _transform.position.z));
+                else if (clicked_object == "QFloor (4)")
+                    editor.PlaceQubit(new Vector3(_transform.position.x, _transform.position.y - 5,
+                        _transform.position.z + 5));
             }
-            editor.PlaceQubit(newPos);
+            else
+            {
+                Vector3 newPos = transform.position;
+                float dPos = 5f;
+                switch (transform.name)
+                {
+                    case "availableFront":
+                        newPos.x += dPos;
+                        break;
+                    case "availableBack":
+                        newPos.x -= dPos;
+                        break;
+                    case "availableTop":
+                        newPos.y += dPos;
+                        break;
+                    case "availableBottom":
+                        newPos.y -= dPos;
+                        break;
+                    case "availableSide2":
+                        newPos.z += dPos;
+                        break;
+                    case "availableSide1":
+                        newPos.z -= dPos;
+                        break;
+                    default:
+                        Debug.LogWarning("Bad Face Name, No Qubit Placed");
+                        return;
+                }
+                editor.PlaceQubit(newPos);
+            }
+            editor.SetState(editState.Edit);
         }
-
     }
 
     // Update is called once per frame
