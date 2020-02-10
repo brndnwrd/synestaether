@@ -28,6 +28,7 @@ public class Editor : MonoBehaviour
         size = 15;
         _grid = new Qubit[size,size,size];
         makeFloor();
+        _state = editState.Rest;
     }
 
     void Update()
@@ -121,6 +122,13 @@ public class Editor : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             placingQubit = QEmiterPrefab;
+        }
+        else if (Input.GetMouseButton(1))
+        {
+            if(_state == editState.Edit)
+            {
+                _state = editState.Rest;
+            }
         }
     }
 }
