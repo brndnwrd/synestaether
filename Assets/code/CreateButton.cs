@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreateButton : MonoBehaviour
+public class CreateButton : Button
 {
-    public Button c_Button;
     void Start()
     {
-        c_Button.onClick.AddListener(ButtonOnClickEvent);
+        onClick.AddListener(ButtonOnClickEvent);
     }
 
     void Update()
     {
-        //if (!c_Button.isSelected)
-        //{
-          //  Debug.Log(2);
-        //}
+        editState _state = GameObject.Find("Editor").GetComponent<Editor>().GetState();
+        if (this.currentSelectionState == SelectionState.Normal && _state == editState.Create)
+            SwitchState();
     }
 
     public void ButtonOnClickEvent()
     {
         GameObject.Find("Editor").GetComponent<Editor>().SetState(editState.Create);
+    }
+
+    public void SwitchState()
+    {
+        GameObject.Find("Editor").GetComponent<Editor>().SetState(editState.Rest);
     }
 }
