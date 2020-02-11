@@ -12,11 +12,11 @@ public enum editState
 public class Editor : MonoBehaviour
 {
     public editState _state;
+    public GameObject _selected;
     public GameObject CubePrefab;
     private Qubit[,,] _grid;
     private int size; // number of rows/columns
     public GameObject placingQubit; // the Qubit from the menu were about to place
-    private GameObject selectedQubit; // the QUbit in the WORLD we are about to edit
     
     public GameObject QFloorPrefab;
     public GameObject QRailsPrefab;
@@ -63,6 +63,11 @@ public class Editor : MonoBehaviour
         throw new NotImplementedException();
     }
 
+    private void RotateQubit()
+    {
+
+    }
+
     //ATM this function gets called by availableFace.cs
     public void PlaceQubit(Vector3 position)
     {
@@ -106,10 +111,12 @@ public class Editor : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.C))
         {
             _state = editState.Create;
+            if (_selected) { _selected.transform.Find("availableFaces").transform.GetChild(0).gameObject.GetComponent<availableFace>().Deselect();}
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
             _state = editState.Rest;
+            if (_selected) { _selected.transform.Find("availableFaces").transform.GetChild(0).gameObject.GetComponent<availableFace>().Deselect(); }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -128,6 +135,41 @@ public class Editor : MonoBehaviour
             if(_state == editState.Edit)
             {
                 _state = editState.Rest;
+            }
+        }
+        //Edit Mode keyboard controls
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            if (_state == editState.Edit)
+            {
+                if (_selected)
+                {
+                    for (int i = 0; i < _selected.transform.childCount; i++)
+                    {
+                        Transform thisChild = _selected.transform.GetChild(i);
+                        if (thisChild.gameObject.tag != "no-rotate")
+                        {
+                            thisChild.transform.Rotate(new Vector3(0, 90, 0));
+                        }
+                    }
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (_state == editState.Edit)
+            {
+                if (_selected)
+                {
+                    for (int i = 0; i < _selected.transform.childCount; i++)
+                    {
+                        Transform thisChild = _selected.transform.GetChild(i);
+                        if (thisChild.gameObject.tag != "no-rotate")
+                        {
+                            thisChild.transform.Rotate(new Vector3(0, -90, 0));
+                        }
+                    }
+                }
             }
         }
     }

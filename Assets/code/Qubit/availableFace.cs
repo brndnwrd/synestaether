@@ -20,6 +20,7 @@ public class availableFace : MonoBehaviour
     private Transform _transform;
     private Color hoverColor;
     private Color restColor;
+    private Color editColor;
 
     void Start()
     {
@@ -29,22 +30,57 @@ public class availableFace : MonoBehaviour
         // DONE: transparency
         hoverColor = new Color(1.0f, 0.0f, 0.0f, 1.0f);
         restColor = new Color(0.0f, 0.0f, 1.0f, 0.2f);
+        editColor = new Color(0.0f, 1.0f, 0.0f, 0.4f);
         _renderer.material.color = restColor;
     }
 
     void OnMouseEnter()
     {
-        _renderer.material.color = hoverColor;
+        GameObject editor_object = GameObject.Find("Editor");
+        Editor editor = editor_object.GetComponent<Editor>();
+        editState state = editor.GetState();
+        if (state == editState.Create)
+        {
+            _renderer.material.color = hoverColor;
+        }
+        else if (_renderer.material.color == hoverColor)
+        {
+            _renderer.material.color = restColor;
+        }
     }
 
     void OnMouseExit()
     {
-        _renderer.material.color = restColor;
+        GameObject editor_object = GameObject.Find("Editor");
+        Editor editor = editor_object.GetComponent<Editor>();
+        editState state = editor.GetState();
+        if (state == editState.Create)
+        {
+            _renderer.material.color = restColor;
+        }
     }
 
     private void OnMouseOver()
     {
-        _renderer.material.color = hoverColor;
+        GameObject editor_object = GameObject.Find("Editor");
+        Editor editor = editor_object.GetComponent<Editor>();
+        editState state = editor.GetState();
+        if (state == editState.Create)
+        {
+            _renderer.material.color = hoverColor;
+        }
+        else if (_renderer.material.color == hoverColor)
+        {
+            _renderer.material.color = restColor;
+        }
+    }
+
+    public void Deselect()
+    {
+        for (int i = 0; i < transform.parent.childCount; i++)
+        {
+            transform.parent.GetChild(i).gameObject.GetComponent<availableFace>()._renderer.material.color = restColor;
+        }
     }
 
     void OnMouseDown()
@@ -102,7 +138,26 @@ public class availableFace : MonoBehaviour
                 }
                 editor.PlaceQubit(newPos);
             }
-            editor.SetState(editState.Edit);
+            _renderer.material.color = restColor;
+            //editor.SetState(editState.Edit);
+        }
+        else if (state == editState.Edit)
+        {
+            if (editor._selected)
+            {
+                editor._selected.transform.Find("availableFaces").transform.GetChild(0).gameObject.GetComponent<availableFace>().Deselect();
+            }
+
+            // Make sure we're not selecting part of the editor
+            if (!this.transform.parent.transform.parent.gameObject.GetComponent<Editor>())
+            {
+                editor._selected = this.transform.parent.transform.parent.gameObject;
+
+                for (int i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<availableFace>()._renderer.material.color = editColor;
+                }
+            }
         }
     }
 

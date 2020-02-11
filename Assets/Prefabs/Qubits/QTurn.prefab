@@ -225,6 +225,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: availableFaces
       objectReference: {fileID: 0}
+    - target: {fileID: 3163260573125677333, guid: 63ef5b9f2d1af401bb4121b8e0e56bf4,
+        type: 3}
+      propertyPath: m_TagString
+      value: no-rotate
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63ef5b9f2d1af401bb4121b8e0e56bf4, type: 3}
 --- !u!4 &2500395314922401246 stripped
