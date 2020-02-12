@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 public enum editState
 {
@@ -22,25 +24,26 @@ public class Editor : MonoBehaviour
     public GameObject QRailsPrefab;
     public GameObject QEmiterPrefab;
     public GameObject QTurnPrefab;
+    public GameObject QSlantPrefab;
     
     void Start()
     {
         size = 15;
         _grid = new Qubit[size,size,size];
-        makeFloor();
+        MakeFloor();
         _state = editState.Rest;
     }
 
     void Update()
     {
-       debugKeyControls(); 
+       KeyControls(); 
     }
 
     private Vector3 indexToPosition(Vector3 index)
     {
-        return index * 10;
+        return index * 10.0f;
     } 
-    private void makeFloor() 
+    private void MakeFloor() 
     {
         for (int x = 0; x < size; x++)
         {
@@ -52,7 +55,7 @@ public class Editor : MonoBehaviour
                 // organizing these as close to Unity space...
                 // as possible, x/z is ground, y is up
                 Qubit q = newbie.GetComponent<Qubit>();
-                _grid[x, 0, z] = q;
+                _grid[(int)indx.x, (int)indx.y, (int)indx.z] = q;
                 q.index = indx;
             }
         }
@@ -81,6 +84,19 @@ public class Editor : MonoBehaviour
         var newCube = Instantiate(placingQubit, parent);
         newCube.transform.position = position;
     }
+
+    public void PlaceQubitByIndex(Vector3 newIndex)
+    {
+        Vector3 newPos = indexToPosition(newIndex);
+        // I think this has something to do with QFloor being
+        // centered in the center of its floor piece. It should
+        // be centered somehow above it. 0.5 above it I guess...
+        //newPos.y += 5f; 
+        Transform par = GameObject.Find("QBlocks").GetComponent<Transform>();
+        var newbie = Instantiate(placingQubit, par);
+        newbie.GetComponent<Qubit>().index = newIndex;
+        newbie.transform.position = newPos;
+    }
     
     /*
      * Make sure every qubit is where it thinks it is.
@@ -102,7 +118,7 @@ public class Editor : MonoBehaviour
     }
 
     // for until we have working GUI
-    void debugKeyControls()
+    void KeyControls()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -129,6 +145,10 @@ public class Editor : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             placingQubit = QEmiterPrefab;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            placingQubit = QSlantPrefab;
         }
         else if (Input.GetMouseButton(1))
         {
