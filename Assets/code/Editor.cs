@@ -34,6 +34,7 @@ public class Editor : MonoBehaviour
     void Update()
     {
        debugKeyControls(); 
+        _state = editState.Create;
     }
 
     private Vector3 indexToPosition(Vector3 index)
