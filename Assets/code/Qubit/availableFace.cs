@@ -23,6 +23,10 @@ public class availableFace : MonoBehaviour
     private Color restColor;
     private Color editColor;
 
+
+    private GameObject editor_object;
+    private Editor editor;
+
     void Start()
     {
         _collider = GetComponent<Collider>();
@@ -31,20 +35,22 @@ public class availableFace : MonoBehaviour
         // DONE: transparency
         hoverColor = new Color(1.0f, 0.0f, 0.0f, 1.0f);
         restColor = new Color(0.0f, 0.0f, 1.0f, 0.0f);
-        editColor = new Color(0.0f, 1.0f, 0.0f, 0.4f);
+        editColor = new Color(0.0f, 1.0f, 0.0f, 0.2f);
         _renderer.material.color = restColor;
         if ( transform.parent.name == "QFloor(Clone)" || transform.parent.name == "QFloor")
         {
             // this makes floor visible, but other availableFace objects invisible unless hovered
             restColor.a = 0.1f;
         } 
-        _renderer.material.color = restColor; 
+        _renderer.material.color = restColor;
+
+
+        editor_object = GameObject.Find("Editor");
+        editor = editor_object.GetComponent<Editor>();
     }
 
     void OnMouseEnter()
     {
-        GameObject editor_object = GameObject.Find("Editor");
-        Editor editor = editor_object.GetComponent<Editor>();
         editState state = editor.GetState();
         if (state == editState.Create)
         {
@@ -58,8 +64,6 @@ public class availableFace : MonoBehaviour
 
     void OnMouseExit()
     {
-        GameObject editor_object = GameObject.Find("Editor");
-        Editor editor = editor_object.GetComponent<Editor>();
         editState state = editor.GetState();
         if (state == editState.Create)
         {
@@ -69,8 +73,6 @@ public class availableFace : MonoBehaviour
 
     private void OnMouseOver()
     {
-        GameObject editor_object = GameObject.Find("Editor");
-        Editor editor = editor_object.GetComponent<Editor>();
         editState state = editor.GetState();
         if (state == editState.Create)
         {
@@ -82,19 +84,13 @@ public class availableFace : MonoBehaviour
         }
     }
 
-    public void Deselect()
+    public void DeselectColor()
     {
-        for (int i = 0; i < transform.parent.childCount; i++)
-        {
-            transform.parent.GetChild(i).gameObject.GetComponent<availableFace>()._renderer.material.color = restColor;
-        }
+        _renderer.material.color = restColor;
     }
 
     void OnMouseDown()
     {
-        
-        GameObject editor_object = GameObject.Find("Editor");
-        Editor editor = editor_object.GetComponent<Editor>();
         editState state = editor.GetState();
         if(state == editState.Create) {
             if (this.transform.parent.name == "QFloor(Clone)")
@@ -161,7 +157,7 @@ public class availableFace : MonoBehaviour
         {
             if (editor._selected)
             {
-                editor._selected.transform.Find("availableFaces").transform.GetChild(0).gameObject.GetComponent<availableFace>().Deselect();
+                editor._selected.GetComponent<Qubit>().Deselect();
             }
 
             // Make sure we're not selecting part of the editor

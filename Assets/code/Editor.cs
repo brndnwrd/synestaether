@@ -17,7 +17,7 @@ public class Editor : MonoBehaviour
     public GameObject _selected;
     public GameObject CubePrefab;
     private Qubit[,,] _grid;
-    private int size; // number of rows/columns
+    public int size; // number of rows/columns
     public GameObject placingQubit; // the Qubit from the menu were about to place
     
     public GameObject QFloorPrefab;
@@ -127,12 +127,12 @@ public class Editor : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.C))
         {
             _state = editState.Create;
-            if (_selected) { _selected.transform.Find("availableFaces").transform.GetChild(0).gameObject.GetComponent<availableFace>().Deselect();}
+            if (_selected) { _selected.GetComponent<Qubit>().Deselect(); }
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
             _state = editState.Rest;
-            if (_selected) { _selected.transform.Find("availableFaces").transform.GetChild(0).gameObject.GetComponent<availableFace>().Deselect(); }
+            if (_selected) { _selected.GetComponent<Qubit>().Deselect(); }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -158,38 +158,45 @@ public class Editor : MonoBehaviour
             }
         }
         //Edit Mode keyboard controls
-        else if (Input.GetKeyDown(KeyCode.J))
+        if (_state == editState.Edit & _selected)
         {
-            if (_state == editState.Edit)
+            if (Input.GetKeyDown(KeyCode.J))
             {
-                if (_selected)
-                {
-                    for (int i = 0; i < _selected.transform.childCount; i++)
-                    {
-                        Transform thisChild = _selected.transform.GetChild(i);
-                        if (thisChild.gameObject.tag != "no-rotate")
-                        {
-                            thisChild.transform.Rotate(new Vector3(0, 90, 0));
-                        }
-                    }
-                }
+                
+                _selected.GetComponent<Qubit>().Rotate(1);
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (_state == editState.Edit)
+            else if (Input.GetKeyDown(KeyCode.L))
             {
-                if (_selected)
-                {
-                    for (int i = 0; i < _selected.transform.childCount; i++)
-                    {
-                        Transform thisChild = _selected.transform.GetChild(i);
-                        if (thisChild.gameObject.tag != "no-rotate")
-                        {
-                            thisChild.transform.Rotate(new Vector3(0, -90, 0));
-                        }
-                    }
-                }
+                _selected.GetComponent<Qubit>().Rotate(-1);
+                
+            }
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                _selected.GetComponent<Qubit>().Translate(directions.North);
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                _selected.GetComponent<Qubit>().Translate(directions.East);
+            }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                _selected.GetComponent<Qubit>().Translate(directions.South);
+            }
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                _selected.GetComponent<Qubit>().Translate(directions.West);
+            }
+            else if (Input.GetKeyDown(KeyCode.I))
+            {
+                _selected.GetComponent<Qubit>().Translate(directions.Up);
+            }
+            else if (Input.GetKeyDown(KeyCode.K))
+            {
+                _selected.GetComponent<Qubit>().Translate(directions.Down);
+            }
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                DestroyImmediate(_selected);
             }
         }
     }
