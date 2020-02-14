@@ -1126,31 +1126,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 30, y: 225, z: 0}
---- !u!1 &1025977921 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5029334087504545100, guid: 08e73e978f368a74d9ed3e9326976a95,
-    type: 3}
-  m_PrefabInstance: {fileID: 1665616618}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1025977922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025977921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e37561b3e5335f143864e7872541add9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!43 &1057212878
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18290
+  m_Name: pb_Mesh13988
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1709,7 +1691,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+      objectReference: {fileID: 2100000, guid: 4135115305962c84492c768bb5b4089e, type: 2}
     - target: {fileID: 3607791102942974204, guid: 08e73e978f368a74d9ed3e9326976a95,
         type: 3}
       propertyPath: m_SelectedEditorRenderState
@@ -1729,6 +1711,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RotationRing
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291448439969119723, guid: 08e73e978f368a74d9ed3e9326976a95,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322614279948448288, guid: 08e73e978f368a74d9ed3e9326976a95,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8447222143827063526, guid: 08e73e978f368a74d9ed3e9326976a95,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08e73e978f368a74d9ed3e9326976a95, type: 3}
