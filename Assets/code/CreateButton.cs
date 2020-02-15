@@ -5,25 +5,47 @@ using UnityEngine.UI;
 
 public class CreateButton : Button
 {
+    Editor editor;
+    Text text;
     void Start()
     {
         onClick.AddListener(ButtonOnClickEvent);
+        editor = GameObject.Find("Editor").GetComponent<Editor>();
+        text = GetComponentInChildren<Text>();
+        text.text = "x " + editor.GetResource(this.name).ToString();
     }
 
     void Update()
     {
-        editState _state = GameObject.Find("Editor").GetComponent<Editor>().GetState();
-        if (this.currentSelectionState == SelectionState.Normal && _state == editState.Create)
-            SwitchState();
+        //editState _state = GameObject.Find("Editor").GetComponent<Editor>().GetState();
+        //if (this.currentSelectionState == SelectionState.Normal && _state == editState.Create)
+            //SwitchState();
     }
 
     public void ButtonOnClickEvent()
     {
-        GameObject.Find("Editor").GetComponent<Editor>().SetState(editState.Create);
+        editor.SetState(editState.Create);
+        if(this.name == "Button_Rail")
+        {
+            editor.SwitchQubit("QRails");
+        }
+        else if(this.name == "Button_Turn")
+        {
+            editor.SwitchQubit("QTurns");
+        }
+        else if(this.name == "Button_Slant")
+        {
+            editor.SwitchQubit("QSlants");
+        }
     }
 
     public void SwitchState()
     {
-        GameObject.Find("Editor").GetComponent<Editor>().SetState(editState.Rest);
+        editor.SetState(editState.Rest);
+    }
+
+    public void ChangeText(int num)
+    {
+        text.text = "x " + num.ToString();
     }
 }
