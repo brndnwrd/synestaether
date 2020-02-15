@@ -25,13 +25,15 @@ public class Editor : MonoBehaviour
     public GameObject QEmiterPrefab;
     public GameObject QTurnPrefab;
     public GameObject QSlantPrefab;
-    
+    private int[] Resource;
+
     void Start()
     {
         size = 15;
         _grid = new Qubit[size,size,size];
         MakeFloor();
         _state = editState.Rest;
+        Resource = new int[3]{15, 4, 2};
     }
 
     void Update()
@@ -74,11 +76,35 @@ public class Editor : MonoBehaviour
     //ATM this function gets called by availableFace.cs
     public void PlaceQubit(Vector3 position)
     {
-        if (placingQubit.name == "QRails")
+        if (placingQubit.name == "QRails2")
         {
-            position.y -= 5f;
+            if (Resource[0] == 0)
+                return;
+            else
+            {
+                position.y -= 5f;
+                Resource[0] -= 1;
+            }
             //this is a quick fix, need to change the prefab
             // cant figure it out atm
+        }
+        else if (placingQubit.name == "QTurn")
+        {
+            if (Resource[1] == 0)
+                return;
+            else
+            {
+                Resource[1] -= 1;
+            }
+        }
+        else if (placingQubit.name == "QSlant-stepped")
+        {
+            if (Resource[2] == 0)
+                return;
+            else
+            {
+                Resource[2] -= 1;
+            }
         }
         Transform parent = GameObject.Find("QBlocks").GetComponent<Transform>();
         var newCube = Instantiate(placingQubit, parent);
@@ -87,6 +113,38 @@ public class Editor : MonoBehaviour
 
     public void PlaceQubitByIndex(Vector3 newIndex)
     {
+        if (placingQubit.name == "QRails2")
+        {
+            if (Resource[0] == 0)
+                return;
+            else
+            {
+                Resource[0] -= 1;
+                GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(Resource[0]);
+            }
+            //this is a quick fix, need to change the prefab
+            // cant figure it out atm
+        }
+        else if (placingQubit.name == "QTurn")
+        {
+            if (Resource[1] == 0)
+                return;
+            else
+            {
+                Resource[1] -= 1;
+                GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(Resource[1]);
+            }
+        }
+        else if (placingQubit.name == "QSlant-stepped")
+        {
+            if (Resource[2] == 0)
+                return;
+            else
+            {
+                Resource[2] -= 1;
+                GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(Resource[2]);
+            }
+        }
         Vector3 newPos = indexToPosition(newIndex);
         // I think this has something to do with QFloor being
         // centered in the center of its floor piece. It should
@@ -97,7 +155,22 @@ public class Editor : MonoBehaviour
         newbie.GetComponent<Qubit>().index = newIndex;
         newbie.transform.position = newPos;
     }
-    
+
+    public void SwitchQubit(String name)
+    {
+        if (name == "QRails")
+        {
+            placingQubit = QRailsPrefab;
+        }
+        else if (name == "QTurns")
+        {
+            placingQubit = QTurnPrefab;
+        }
+        else if (name == "QSlants")
+        {
+            placingQubit = QSlantPrefab;
+        }
+    }
     /*
      * Make sure every qubit is where it thinks it is.
      * Check Qubit.index == Editor's index, else throw
@@ -115,6 +188,26 @@ public class Editor : MonoBehaviour
     public void SetState(editState state)
     {
         _state = state;
+    }
+
+    public int GetResource(String name)
+    {
+        if (name == "Button_Rail" && Resource != null)
+        {
+            return Resource[0];
+        }
+        else if (name == "Button_Turn" && Resource != null)
+        {
+            return Resource[1];
+        }
+        else if (name == "Button_Slant" && Resource != null)
+        {
+            return Resource[2];
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     // for until we have working GUI
