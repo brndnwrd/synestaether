@@ -22,10 +22,12 @@ public class availableFace : MonoBehaviour
     private Color hoverColor;
     private Color restColor;
     private Color editColor;
-
+    //this is where  a block should be placed if this face
+    // is clicked on
+    private Vector3 pointsTowards; 
 
     private GameObject editor_object;
-    private Editor editor;
+    private Editor _editor;
 
     void Start()
     {
@@ -46,25 +48,74 @@ public class availableFace : MonoBehaviour
 
 
         editor_object = GameObject.Find("Editor");
-        editor = editor_object.GetComponent<Editor>();
+        _editor = editor_object.GetComponent<Editor>();
+        
+        // This is to set where the block gets placed
+        // when the face is clicked "pointsTowards"
+        Qubit _qubit;
+        if (transform.parent.name == "availableFaces")
+        {  //any Qubit except QFloor
+            _qubit = transform.parent.parent.gameObject.GetComponent<Qubit>();
+        }
+        else
+        { //QFloor
+            _qubit = transform.parent.gameObject.GetComponent<Qubit>();
+        }
+        var newIndex = _qubit.index;
+        switch (transform.name)
+        {
+            case "availableFront": 
+                newIndex.x += 1.0f;
+                break;
+            case "availableBack":
+                newIndex.x -= 1.0f; 
+                break;
+            case "availableTop":
+                newIndex.y += 1.0f;
+                break;
+            case "availableBottom":
+                newIndex.y -= 1.0f;
+                break;
+            case "availableSide2":
+                newIndex.z += 1.0f;
+                break;
+            case "availableSide1":
+                newIndex.z -= 1.0f;
+                break;
+            case "availableFace":
+                break;
+            default:
+                Debug.LogWarning("Bad Face Name, No Qubit Placed: " + transform.name);
+                return;
+        }
+        
+        pointsTowards = newIndex;
+                        
     }
 
     void OnMouseEnter()
     {
-        editState state = editor.GetState();
+        if (!enabled) return;
+           
+
+        editState state = _editor.GetState();
         if (state == editState.Create)
         {
             _renderer.material.color = hoverColor;
+            _editor.GhostBlock.transform.position = _editor.indexToPosition(pointsTowards);
         }
         else if (_renderer.material.color == hoverColor)
         {
             _renderer.material.color = restColor;
         }
+
     }
 
     void OnMouseExit()
     {
-        editState state = editor.GetState();
+        if (!enabled) return;
+        
+        editState state = _editor.GetState();
         if (state == editState.Create)
         {
             _renderer.material.color = restColor;
@@ -73,7 +124,8 @@ public class availableFace : MonoBehaviour
 
     private void OnMouseOver()
     {
-        editState state = editor.GetState();
+        if (!enabled) return;
+        editState state = _editor.GetState();
         if (state == editState.Create)
         {
             _renderer.material.color = hoverColor;
@@ -91,79 +143,39 @@ public class availableFace : MonoBehaviour
 
     void OnMouseDown()
     {
-        editState state = editor.GetState();
+        if (!enabled) return;
+        
+        editState state = _editor.GetState();
         if(state == editState.Create) {
             if (this.transform.parent.name == "QFloor(Clone)")
             {
-                // spa - ghet - EEEE
                 String clicked_object = this.transform.parent.name;
                 if (clicked_object == "QFloor(Clone)" || clicked_object == "QFloor (1)")
                 {
                     //editor.PlaceQubit(_transform.position + Vector3.up * 5f);
-                    editor.PlaceQubitByIndex(transform.parent.GetComponent<Qubit>().index);
+                    _editor.PlaceQubitByIndex(transform.parent.GetComponent<Qubit>().index);
                 }
             }
             else
             {
-                Vector3 newPos = transform.position;
-                Qubit _qubit;
-                if (transform.parent.name == "availableFaces")
-                {  //any Qubit except QFloor
-                    _qubit = transform.parent.parent.gameObject.GetComponent<Qubit>();
-                }
-                else
-                { //QFloor
-                    _qubit = transform.parent.gameObject.GetComponent<Qubit>();
-                }
-                var newIndex = _qubit.index;
-                float dPos = 5f;
-                switch (transform.name)
-                {
-                    case "availableFront":
-                        newPos.x += dPos;
-                        newIndex.x += 1.0f;
-                        break;
-                    case "availableBack":
-                        newPos.x -= dPos;
-                        newIndex.x -= 1.0f;
-                        break;
-                    case "availableTop":
-                        newPos.y += dPos;
-                        newIndex.y += 1.0f;
-                        break;
-                    case "availableBottom":
-                        newPos.y -= dPos;
-                        newIndex.y -= 1.0f;
-                        break;
-                    case "availableSide2":
-                        newPos.z += dPos;
-                        newIndex.z += 1.0f;
-                        break;
-                    case "availableSide1":
-                        newPos.z -= dPos;
-                        newIndex.z -= 1.0f;
-                        break;
-                    default:
-                        Debug.LogWarning("Bad Face Name, No Qubit Placed");
-                        return;
-                }
+                var newIndex = pointsTowards;
                 //editor.PlaceQubit(newPos);
-                editor.PlaceQubitByIndex(newIndex);
+                _editor.PlaceQubitByIndex(newIndex);
             }
             _renderer.material.color = restColor;
             //editor.SetState(editState.Edit);
         }
         else if (state == editState.Edit)
         {
-            if (editor._selected)
+            if (_editor._selected)
             {
-                editor._selected.GetComponent<Qubit>().Deselect();
+                _editor._selected.GetComponent<Qubit>().Deselect();
             }
 
             // Make sure we're not selecting part of the editor
             if (!this.transform.parent.transform.parent.gameObject.GetComponent<Editor>())
             {
-                editor._selected = this.transform.parent.transform.parent.gameObject;
+                _editor._selected = this.transform.parent.transform.parent.gameObject;
 
                 for (int i = 0; i < transform.parent.childCount; i++)
                 {

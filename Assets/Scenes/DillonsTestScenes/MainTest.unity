@@ -258,8 +258,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _state: 1
   _selected: {fileID: 0}
-  CubePrefab: {fileID: 6874748106890739377, guid: 21d9563a14d1f4d809aac591422d335a,
-    type: 3}
   size: 0
   placingQubit: {fileID: 3455124593961939990, guid: 62a85696b079440c7a5b9f986878f3b9,
     type: 3}
@@ -273,6 +271,8 @@ MonoBehaviour:
     type: 3}
   QSlantPrefab: {fileID: 4589258973072395486, guid: 4c369f3d875ea4f478e78984517a5d1f,
     type: 3}
+  GhostBlock: {fileID: 0}
+  GhostBlockMaterial: {fileID: 2100000, guid: 4e5fe1f399ccb4b3e906f5c3dc4e46f4, type: 2}
 --- !u!1 &365109556
 GameObject:
   m_ObjectHideFlags: 0

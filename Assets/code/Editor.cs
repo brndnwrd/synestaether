@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
+using UnityEngine.AI;
 using Vector3 = UnityEngine.Vector3;
 
 public enum editState
@@ -15,7 +16,7 @@ public class Editor : MonoBehaviour
 {
     public editState _state;
     public GameObject _selected;
-    public GameObject CubePrefab;
+    //public GameObject CubePrefab;
     private Qubit[,,] _grid;
     public int size; // number of rows/columns
     public GameObject placingQubit; // the Qubit from the menu were about to place
@@ -25,6 +26,10 @@ public class Editor : MonoBehaviour
     public GameObject QEmiterPrefab;
     public GameObject QTurnPrefab;
     public GameObject QSlantPrefab;
+    [HideInInspector]
+    public GameObject GhostBlock;
+    public Material GhostBlockMaterial;
+    
     private int[] Resource;
 
     void Start()
@@ -32,7 +37,7 @@ public class Editor : MonoBehaviour
         size = 15;
         _grid = new Qubit[size,size,size];
         MakeFloor();
-        _state = editState.Rest;
+        SetState(editState.Rest);
         Resource = new int[3]{15, 4, 2};
     }
 
@@ -41,7 +46,7 @@ public class Editor : MonoBehaviour
        KeyControls(); 
     }
 
-    private Vector3 indexToPosition(Vector3 index)
+    public Vector3 indexToPosition(Vector3 index)
     {
         return index * 10.0f;
     } 
@@ -170,6 +175,7 @@ public class Editor : MonoBehaviour
         {
             placingQubit = QSlantPrefab;
         }
+        UpdateGhostBlock();
     }
     /*
      * Make sure every qubit is where it thinks it is.
@@ -185,9 +191,62 @@ public class Editor : MonoBehaviour
         return _state;
     }
 
-    public void SetState(editState state)
+    public void SetState(editState newState)
     {
-        _state = state;
+        Debug.Log("state now equal to " + newState);
+        var oldState = _state;
+        
+        if (newState != editState.Edit)
+        {
+            if (_selected)
+            {
+                _selected.GetComponent<Qubit>().Deselect();
+            }
+        }
+        if (newState == editState.Create)
+        {
+            Destroy(GhostBlock);
+            GhostBlock = MakeGhostBlock(placingQubit);
+        }
+
+        if (newState != editState.Create)
+        {
+            Destroy(GhostBlock);
+            GhostBlock = null;
+        }
+
+        _state = newState;
+        
+    }
+
+    public void UpdateGhostBlock()
+    {
+        if (_state == editState.Create)
+        {
+            var oldPos = GhostBlock.transform.position;
+            Destroy(GhostBlock);
+            GhostBlock = MakeGhostBlock(placingQubit);
+            GhostBlock.transform.position = oldPos;
+            //GhostBlock.transform.position = GhostBlockInitPosition;
+        }
+    }
+    
+    private GameObject MakeGhostBlock(GameObject prefab)
+    {
+        Debug.Log("Making ghost block!");
+        GameObject newGhost = Instantiate(prefab);
+        availableFace[] faces = newGhost.GetComponentsInChildren<availableFace>();
+        for (var i = 0; i < faces.Length; i++)
+        {
+            //faces[i].enabled = false;
+            Destroy(faces[i].gameObject);
+        }
+        newGhost.GetComponentInChildren<Collider>().enabled = false;
+        newGhost.GetComponentInChildren<MeshRenderer>().material = new Material(GhostBlockMaterial);
+        //MeshRenderer[] renderer = newGhost.GetComponentsInChildren<MeshRenderer>();
+        //renderer.material.color = Color.blue;//new Color(0.0f, 0.0f, 1.0f, 0.2f);
+
+        return newGhost;
     }
 
     public int GetResource(String name)
@@ -210,30 +269,43 @@ public class Editor : MonoBehaviour
         }
     }
 
-    // for until we have working GUI
+    // for until we have working GUI... and beyond?
     void KeyControls()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            _state = editState.Edit;
+            SetState(editState.Edit);
         } 
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            _state = editState.Create;
-            if (_selected) { _selected.GetComponent<Qubit>().Deselect(); }
+            SetState(editState.Create);
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            switch (_state)
+            {
+                case editState.Create:
+                    SetState(editState.Rest);
+                    break;
+                case editState.Rest:
+                case editState.Edit:
+                    SetState(editState.Create);
+                    break;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
-            _state = editState.Rest;
-            if (_selected) { _selected.GetComponent<Qubit>().Deselect(); }
+            SetState(editState.Rest);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             placingQubit = QRailsPrefab;
+            SwitchQubit("QRails");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             placingQubit = QTurnPrefab;
+            SwitchQubit("QTurns");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
@@ -242,26 +314,25 @@ public class Editor : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             placingQubit = QSlantPrefab;
+            SwitchQubit("QSlants");
         }
-        else if (Input.GetMouseButton(1))
-        {
-            if(_state == editState.Edit)
-            {
-                _state = editState.Rest;
-            }
-        }
+        //else if (Input.GetMouseButton(1))
+        //{
+        //    if(_state == editState.Edit)
+        //    {
+        //        _state = editState.Rest;
+        //    }
+        //}
         //Edit Mode keyboard controls
-        if (_state == editState.Edit & _selected)
+        if (_state == editState.Edit && _selected)
         {
             if (Input.GetKeyDown(KeyCode.J))
             {
-                
                 _selected.GetComponent<Qubit>().Rotate(1);
             }
             else if (Input.GetKeyDown(KeyCode.L))
             {
                 _selected.GetComponent<Qubit>().Rotate(-1);
-                
             }
             else if (Input.GetKeyDown(KeyCode.W))
             {
