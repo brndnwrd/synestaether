@@ -163,18 +163,22 @@ public class Editor : MonoBehaviour
 
     public void SwitchQubit(String name)
     {
-        if (name == "QRails")
+        switch (name)
         {
-            placingQubit = QRailsPrefab;
+            case "QRails":
+                placingQubit = QRailsPrefab;
+                break;
+            case "QTurns":
+                placingQubit = QTurnPrefab;
+                break;
+            case "QSlants":
+                placingQubit = QSlantPrefab;
+                break;
+            case "QEmitter":
+                placingQubit = QEmiterPrefab;
+                break;
         }
-        else if (name == "QTurns")
-        {
-            placingQubit = QTurnPrefab;
-        }
-        else if (name == "QSlants")
-        {
-            placingQubit = QSlantPrefab;
-        }
+
         UpdateGhostBlock();
     }
     /*
@@ -315,6 +319,10 @@ public class Editor : MonoBehaviour
         {
             placingQubit = QSlantPrefab;
             SwitchQubit("QSlants");
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            SwitchQubit("QEmitter");
         }
         //else if (Input.GetMouseButton(1))
         //{
