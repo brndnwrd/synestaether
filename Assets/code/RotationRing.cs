@@ -9,16 +9,20 @@ public class RotationRing : MonoBehaviour
     private MeshRenderer _renderer;
     private Transform _transform;
     private Camera _camera;
-
+    private GameObject cameraParent;
     private Color baseColor;
     private Color hoverColor;
 
+    private float destRot; // destination rotation, lerp to this number
+    
     private bool _isDrag;
     private Vector3 _dragLast;
 
     // Start is called before the first frame update
     void Start()
     {
+        destRot = transform.rotation.eulerAngles.y;
+        cameraParent = GameObject.Find("CameraParent");
         _collider = GetComponent<Collider>();
         _renderer = GetComponent<MeshRenderer>();
         _transform = GetComponent<Transform>();
@@ -33,16 +37,27 @@ public class RotationRing : MonoBehaviour
         _renderer.material.color = baseColor;
     }
 
+    public void SetRotationDestination(float newAngle)
+    {
+        destRot = newAngle;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        float currRot = cameraParent.transform.rotation.eulerAngles.y;
+        
         if (_isDrag)
         {
-            float rotAngle = (_dragLast.x - Input.mousePosition.x);
-            _camera.GetComponent<Transform>().RotateAround(new Vector3(70, 0, 70), new Vector3(0, 1, 0), -rotAngle);
-            transform.RotateAround(new Vector3(70, 0, 70), new Vector3(0, 1, 0), -rotAngle);
-            _dragLast = Input.mousePosition;
+            destRot += (_dragLast.x - Input.mousePosition.x)/100f;
         }
+
+        var newRotQuat = Quaternion.Slerp(
+            Quaternion.Euler(0f,currRot,0f), 
+            Quaternion.Euler(0f, destRot, 0f),
+            0.1f);
+
+        cameraParent.transform.rotation = newRotQuat;
     }
 
     private void OnMouseOver()
@@ -56,6 +71,7 @@ public class RotationRing : MonoBehaviour
         {
             GetComponent<Renderer>().material.color = baseColor;
         }
+        Debug.Log(destRot);
     }
 
     private void OnMouseDown()
