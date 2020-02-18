@@ -5,6 +5,8 @@ using UnityEngine;
 public class RotationRing : MonoBehaviour
 {
 
+    public float invRotSpeed = 20f;
+    
     private Collider _collider;
     private MeshRenderer _renderer;
     private Transform _transform;
@@ -21,6 +23,7 @@ public class RotationRing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         destRot = transform.rotation.eulerAngles.y;
         cameraParent = GameObject.Find("CameraParent");
         _collider = GetComponent<Collider>();
@@ -53,10 +56,10 @@ public class RotationRing : MonoBehaviour
         }
 
         var newRotQuat = Quaternion.Slerp(
-            Quaternion.Euler(0f,currRot,0f), 
+            Quaternion.Euler(0f, currRot, 0f),
             Quaternion.Euler(0f, destRot, 0f),
-            0.1f);
-
+            1f/invRotSpeed);
+        transform.parent.transform.rotation = newRotQuat;
         cameraParent.transform.rotation = newRotQuat;
     }
 
@@ -71,7 +74,6 @@ public class RotationRing : MonoBehaviour
         {
             GetComponent<Renderer>().material.color = baseColor;
         }
-        Debug.Log(destRot);
     }
 
     private void OnMouseDown()
