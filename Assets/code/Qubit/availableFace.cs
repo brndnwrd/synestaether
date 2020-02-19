@@ -104,9 +104,19 @@ public class availableFace : MonoBehaviour
             _renderer.material.color = hoverColor;
             _editor.GhostBlock.transform.position = _editor.indexToPosition(pointsTowards);
         }
-        else if (_renderer.material.color == hoverColor)
+        else
         {
-            _renderer.material.color = restColor;
+            if (transform.parent.childCount > 1)
+            {
+                for (var i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = hoverColor;
+                }
+            }
+            else
+            {
+                _renderer.material.color = restColor;
+            }
         }
 
     }
@@ -120,6 +130,23 @@ public class availableFace : MonoBehaviour
         {
             _renderer.material.color = restColor;
         }
+        else
+        {
+            if (transform.parent.childCount > 1)
+            {
+                for (var i = 0; i < transform.parent.childCount; i++)
+                {
+                    if (state == editState.Edit && transform.parent.parent.gameObject == _editor._selected)
+                    {
+                        transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = editColor;
+                    }
+                    else
+                    {
+                        transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = restColor;
+                    }
+                }
+            }
+        }
     }
 
     private void OnMouseOver()
@@ -130,9 +157,19 @@ public class availableFace : MonoBehaviour
         {
             _renderer.material.color = hoverColor;
         }
-        else if (_renderer.material.color == hoverColor)
+        else
         {
-            _renderer.material.color = restColor;
+            if (transform.parent.childCount > 1)
+            {
+                for (var i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = hoverColor;
+                }
+            }
+            else
+            {
+                _renderer.material.color = restColor;
+            }
         }
     }
 
@@ -165,8 +202,12 @@ public class availableFace : MonoBehaviour
             _renderer.material.color = restColor;
             //editor.SetState(editState.Edit);
         }
-        else if (state == editState.Edit)
+        else if (state == editState.Edit || state == editState.Rest)
         {
+            if (state == editState.Rest)
+            {
+                _editor.SetState(editState.Edit);
+            }
             if (_editor._selected)
             {
                 _editor._selected.GetComponent<Qubit>().Deselect();
