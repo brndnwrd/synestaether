@@ -13,7 +13,7 @@ public enum editState
     Edit,
 }
 public class Editor : MonoBehaviour
-{
+{ 
     public editState _state;
     public GameObject _selected;
     //public GameObject CubePrefab;
@@ -237,7 +237,6 @@ public class Editor : MonoBehaviour
     
     private GameObject MakeGhostBlock(GameObject prefab)
     {
-        Debug.Log("Making ghost block!");
         GameObject newGhost = Instantiate(prefab);
         availableFace[] faces = newGhost.GetComponentsInChildren<availableFace>();
         for (var i = 0; i < faces.Length; i++)
