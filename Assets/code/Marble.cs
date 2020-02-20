@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Marble : MonoBehaviour
 {
-    public float minVelocity = 6f;
+    public float minVelocity = 1f;
     public float fadeOutSeconds = 2f;
     private Rigidbody _rigidBody;
     [HideInInspector]
