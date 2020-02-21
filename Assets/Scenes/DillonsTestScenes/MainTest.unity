@@ -269,7 +269,7 @@ MonoBehaviour:
     type: 3}
   QTurnPrefab: {fileID: 1993529849540996714, guid: e5f36ec48455c45f091dcb7d62985a7a,
     type: 3}
-  QSlantPrefab: {fileID: 7106665071089979571, guid: cdf5cc7e8dfb347ab8fee75342ad1fc2,
+  QSlantPrefab: {fileID: 5503561628432252578, guid: da360f41ca6cd442bb578d1e0c52fa79,
     type: 3}
   GhostBlock: {fileID: 0}
   GhostBlockMaterial: {fileID: 2100000, guid: 4e5fe1f399ccb4b3e906f5c3dc4e46f4, type: 2}
