@@ -26,6 +26,7 @@ public class Editor : MonoBehaviour
     public GameObject QEmiterPrefab;
     public GameObject QTurnPrefab;
     public GameObject QSlantPrefab;
+    public GameObject QFunnelPrefab;
     [HideInInspector]
     public GameObject GhostBlock;
     public Material GhostBlockMaterial;
@@ -177,6 +178,9 @@ public class Editor : MonoBehaviour
             case "QEmitter":
                 placingQubit = QEmiterPrefab;
                 break;
+            case "QFunnel":
+                placingQubit = QFunnelPrefab;
+                break;
         }
 
         UpdateGhostBlock();
@@ -312,12 +316,14 @@ public class Editor : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            placingQubit = QEmiterPrefab;
+            //placingQubit = QEmiterPrefab;
+            placingQubit = QSlantPrefab;
+            SwitchQubit("QSlants");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            placingQubit = QSlantPrefab;
-            SwitchQubit("QSlants");
+            placingQubit = QFunnelPrefab;
+            SwitchQubit("QFunnel");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
