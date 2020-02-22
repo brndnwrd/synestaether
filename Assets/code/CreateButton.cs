@@ -37,6 +37,16 @@ public class CreateButton : Button
         {
             editor.SwitchQubit("QSlants");
         }
+        else if (this.name == "Serialize")
+        {
+            Serialize save_level = new Serialize();
+            save_level.Save_Level();
+        }
+        else if (this.name == "Load")
+        {
+            Serialize save_level = new Serialize();
+            save_level.Load_Level(1);
+        }
     }
 
     public void SwitchState()
