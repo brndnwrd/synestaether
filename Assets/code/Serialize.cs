@@ -64,6 +64,12 @@ public class Serialize
 
     public int[] Load_Level(int num)
     {
+        Transform[] Old_Qubits_Transform = GameObject.Find("QBlocks").GetComponentsInChildren<Transform>();
+        for(int i = 1; i < Old_Qubits_Transform.Length; i++)
+        {
+            if(Old_Qubits_Transform[i] != null)
+                GameObject.DestroyImmediate(Old_Qubits_Transform[i].gameObject);
+        }
         if (File.Exists("Assets/levels/" + num.ToString()))
         {
             BinaryFormatter bf = new BinaryFormatter();
