@@ -19,6 +19,7 @@ public class QBucket : Qubit
     private MeshRenderer _totalRenderer;
     private GameObject progressPivot;
     private float marbleScore = 0f;
+    private LevelCompletePartSys _partSys;
     
     public override void Start()
     {
@@ -26,6 +27,7 @@ public class QBucket : Qubit
         _level = FindObjectOfType<Level>();
         progressPivot = transform.Find("ProgressParent").Find("ProgressPivot").gameObject;
         _totalRenderer = transform.Find("ProgressParent").Find("Total").gameObject.GetComponent<MeshRenderer>();
+        _partSys = transform.Find("LevelCompletePartSys").GetComponent<LevelCompletePartSys>();
     }
 
     // called by the MarbleDetector.cs (a child of this.gameObject)
@@ -46,12 +48,19 @@ public class QBucket : Qubit
         isFull = marbleScore >  necessaryMarbleScore;
         if (isFull)
         {
+            //_partSys.Activate();
             _totalRenderer.material = doneMaterial;
         }
         else
         {
             _totalRenderer.material = stillWorkingMaterial;
         }
+    }
+
+    // que the fun level complete visuals!
+    public void OnLevelComplete()
+    {
+        _partSys.Activate();
     }
 
 }

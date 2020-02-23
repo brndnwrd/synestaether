@@ -55,6 +55,11 @@ public class Level : MonoBehaviour
 
     public void CompleteLevel()
     {
+        
+        for (int i = 0; i < _buckets.Length; i++)
+        {
+            _buckets[i].OnLevelComplete();
+        }
         Debug.Log("Level Complete");
         /* here we do all the fun stuff that
            happens when you beat a level,
