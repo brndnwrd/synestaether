@@ -201,7 +201,7 @@ public class Editor : MonoBehaviour
 
     public void SetState(editState newState)
     {
-        Debug.Log("state now equal to " + newState);
+        //Debug.Log("state now equal to " + newState);
         var oldState = _state;
         
         if (newState != editState.Edit)
