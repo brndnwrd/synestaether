@@ -16,6 +16,7 @@ public enum directions
     Up,
     Down
 }
+
 public class Qubit : MonoBehaviour
 {
     public bool editable;
@@ -23,11 +24,14 @@ public class Qubit : MonoBehaviour
     public Vector3 index;
     public List<availableFace> availableFaces;
 
+    private Editor _editor;
+
     // a general startup method for Qubits
     // You must add this MANUALLY to your startup method
     public void Initialize()
     {
         availableFaces = GetComponents<availableFace>().ToList();
+        _editor = GameObject.Find("Editor").GetComponent<Editor>();
     }
 
     public void Deselect()
@@ -57,19 +61,23 @@ public class Qubit : MonoBehaviour
             case directions.North:
                 if (index.x > 0)
                 {
+                    //Debug.Log(_editor);
+                    //Debug.Log(_editor._grid[(int)index.x, (int)index.y, (int)index.z].GetComponent<Qubit>());
+                    //_editor._grid[(int) index.x, (int) index.y, (int) index.z] = null;
                     index.x -= 1;
                     transform.position = index * 10.0f;
+                    //_editor._grid[(int) index.x, (int) index.y, (int) index.z] = gameObject;
                 }
                 break;
             case directions.East:
-                if (index.z < FindObjectOfType<Editor>().GetComponent<Editor>().size)
+                if (index.z < FindObjectOfType<Editor>().GetComponent<Editor>().size-1)
                 {
                     index.z += 1;
                     transform.position = index * 10.0f;
                 }
                 break;
             case directions.South:
-                if (index.x < FindObjectOfType<Editor>().GetComponent<Editor>().size)
+                if (index.x < FindObjectOfType<Editor>().GetComponent<Editor>().size-1)
                 {
                     index.x += 1;
                     transform.position = index * 10.0f;
@@ -83,7 +91,7 @@ public class Qubit : MonoBehaviour
                 }
                 break;
             case directions.Up:
-                if (index.y < FindObjectOfType<Editor>().GetComponent<Editor>().size)
+                if (index.y < FindObjectOfType<Editor>().GetComponent<Editor>().size-1)
                 {
                     index.y += 1;
                     transform.position = index * 10.0f;

@@ -17,7 +17,7 @@ public class Editor : MonoBehaviour
     public editState _state;
     public GameObject _selected;
     //public GameObject CubePrefab;
-    private Qubit[,,] _grid;
+    public GameObject[,,] _grid;
     public int size; // number of rows/columns
     public GameObject placingQubit; // the Qubit from the menu were about to place
     
@@ -36,7 +36,7 @@ public class Editor : MonoBehaviour
     void Start()
     {
         size = 15;
-        _grid = new Qubit[size,size,size];
+        _grid = new GameObject[size,size,size];
         MakeFloor();
         SetState(editState.Rest);
         Resource = new int[3]{15, 4, 2};
@@ -62,9 +62,7 @@ public class Editor : MonoBehaviour
                 newbie.transform.position = indexToPosition(indx);
                 // organizing these as close to Unity space...
                 // as possible, x/z is ground, y is up
-                Qubit q = newbie.GetComponent<Qubit>();
-                _grid[(int)indx.x, (int)indx.y, (int)indx.z] = q;
-                q.index = indx;
+                newbie.GetComponent<Qubit>().index = indx;
             }
         }
     }
@@ -160,6 +158,7 @@ public class Editor : MonoBehaviour
         var newbie = Instantiate(placingQubit, par);
         newbie.GetComponent<Qubit>().index = newIndex;
         newbie.transform.position = newPos;
+        _grid[(int) newIndex.x, (int) newIndex.y, (int) newIndex.z] = newbie;
     }
 
     public void SwitchQubit(String name)

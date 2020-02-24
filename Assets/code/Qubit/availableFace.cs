@@ -16,6 +16,7 @@ using Debug = UnityEngine.Debug;
 
 public class availableFace : MonoBehaviour
 {
+    private Qubit _qubit;
     private Collider _collider;
     private MeshRenderer _renderer;
     private Transform _transform;
@@ -52,7 +53,6 @@ public class availableFace : MonoBehaviour
         
         // This is to set where the block gets placed
         // when the face is clicked "pointsTowards"
-        Qubit _qubit;
         if (transform.parent.name == "availableFaces")
         {  //any Qubit except QFloor
             _qubit = transform.parent.parent.gameObject.GetComponent<Qubit>();
@@ -61,7 +61,8 @@ public class availableFace : MonoBehaviour
         { //QFloor
             _qubit = transform.parent.gameObject.GetComponent<Qubit>();
         }
-        var newIndex = _qubit.index;
+        // var newIndex = _qubit.index;
+        var newIndex = new Vector3();
         switch (transform.name)
         {
             case "availableFront": 
@@ -102,7 +103,7 @@ public class availableFace : MonoBehaviour
         if (state == editState.Create)
         {
             _renderer.material.color = hoverColor;
-            _editor.GhostBlock.transform.position = _editor.indexToPosition(pointsTowards);
+            _editor.GhostBlock.transform.position = _editor.indexToPosition(_qubit.index + pointsTowards);
         }
         else
         {
@@ -190,12 +191,12 @@ public class availableFace : MonoBehaviour
                 if (clicked_object == "QFloor(Clone)" || clicked_object == "QFloor (1)")
                 {
                     //editor.PlaceQubit(_transform.position + Vector3.up * 5f);
-                    _editor.PlaceQubitByIndex(transform.parent.GetComponent<Qubit>().index);
+                    _editor.PlaceQubitByIndex(_qubit.index);
                 }
             }
             else
             {
-                var newIndex = pointsTowards;
+                var newIndex = _qubit.index + pointsTowards;
                 //editor.PlaceQubit(newPos);
                 _editor.PlaceQubitByIndex(newIndex);
             }
