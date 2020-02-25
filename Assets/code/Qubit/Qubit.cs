@@ -24,14 +24,13 @@ public class Qubit : MonoBehaviour
     public Vector3 index;
     public List<availableFace> availableFaces;
 
-    private Editor _editor;
+    public Editor _editor;
 
     // a general startup method for Qubits
     // You must add this MANUALLY to your startup method
     public void Initialize()
     {
         availableFaces = GetComponents<availableFace>().ToList();
-        _editor = GameObject.Find("Editor").GetComponent<Editor>();
     }
 
     public void Deselect()
@@ -56,50 +55,59 @@ public class Qubit : MonoBehaviour
 
     public void Translate(directions direction)
     {
+        Transform par = GameObject.Find("QBlocks").GetComponent<Transform>();
         switch (direction)
         {
             case directions.North:
-                if (index.x > 0)
+                if (index.x > 0 && !_editor._grid[(int)index.x - 1, (int)index.y, (int)index.z])
                 {
-                    //Debug.Log(_editor);
-                    //Debug.Log(_editor._grid[(int)index.x, (int)index.y, (int)index.z].GetComponent<Qubit>());
-                    //_editor._grid[(int) index.x, (int) index.y, (int) index.z] = null;
+                    _editor._grid[(int)index.x-1, (int) index.y, (int) index.z] = _editor._grid[(int)index.x, (int)index.y, (int)index.z];
+                    _editor._grid[(int)index.x, (int)index.y, (int)index.z] = null;
                     index.x -= 1;
                     transform.position = index * 10.0f;
-                    //_editor._grid[(int) index.x, (int) index.y, (int) index.z] = gameObject;
                 }
                 break;
             case directions.East:
-                if (index.z < FindObjectOfType<Editor>().GetComponent<Editor>().size-1)
+                if (index.z < FindObjectOfType<Editor>().GetComponent<Editor>().size-1 && !_editor._grid[(int)index.x, (int)index.y, (int)index.z+1])
                 {
-                    index.z += 1;
+                    _editor._grid[(int)index.x, (int)index.y, (int)index.z+1] = _editor._grid[(int)index.x, (int)index.y, (int)index.z];
+                    _editor._grid[(int)index.x, (int)index.y, (int)index.z] = null;
+                    index.z += 1; 
                     transform.position = index * 10.0f;
                 }
                 break;
             case directions.South:
-                if (index.x < FindObjectOfType<Editor>().GetComponent<Editor>().size-1)
+                if (index.x < FindObjectOfType<Editor>().GetComponent<Editor>().size-1 && !_editor._grid[(int)index.x + 1, (int)index.y, (int)index.z])
                 {
+                    _editor._grid[(int)index.x + 1, (int)index.y, (int)index.z] = _editor._grid[(int)index.x, (int)index.y, (int)index.z];
+                    _editor._grid[(int)index.x, (int)index.y, (int)index.z] = null;
                     index.x += 1;
                     transform.position = index * 10.0f;
                 }
                 break;
             case directions.West:
-                if (index.z > 0)
+                if (index.z > 0 && !_editor._grid[(int)index.x, (int)index.y, (int)index.z-1])
                 {
+                    _editor._grid[(int)index.x, (int)index.y, (int)index.z-1] = _editor._grid[(int)index.x, (int)index.y, (int)index.z];
+                    _editor._grid[(int)index.x, (int)index.y, (int)index.z] = null;
                     index.z -= 1;
                     transform.position = index * 10.0f;
                 }
                 break;
             case directions.Up:
-                if (index.y < FindObjectOfType<Editor>().GetComponent<Editor>().size-1)
+                if (index.y < FindObjectOfType<Editor>().GetComponent<Editor>().size-1 && !_editor._grid[(int)index.x, (int)index.y+1, (int)index.z])
                 {
+                    _editor._grid[(int)index.x, (int)index.y+1, (int)index.z] = _editor._grid[(int)index.x, (int)index.y, (int)index.z];
+                    _editor._grid[(int)index.x, (int)index.y, (int)index.z] = null;
                     index.y += 1;
                     transform.position = index * 10.0f;
                 }
                 break;
             case directions.Down:
-                if (index.y > 0)
+                if (index.y > 0 && !_editor._grid[(int)index.x, (int)index.y-1, (int)index.z])
                 {
+                    _editor._grid[(int)index.x, (int)index.y-1, (int)index.z] = _editor._grid[(int)index.x, (int)index.y, (int)index.z];
+                    _editor._grid[(int)index.x, (int)index.y, (int)index.z] = null;
                     index.y -= 1;
                     transform.position = index * 10.0f;
                 }
@@ -113,6 +121,7 @@ public class Qubit : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
+        _editor = GameObject.Find("Editor").GetComponent<Editor>();
     }
 
     // Update is called once per frame
