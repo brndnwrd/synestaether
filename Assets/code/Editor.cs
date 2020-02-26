@@ -200,7 +200,7 @@ public class Editor : MonoBehaviour
 
     public void SetState(editState newState)
     {
-        //Debug.Log("state now equal to " + newState);
+//        Debug.Log("state now equal to " + newState);
         var oldState = _state;
         
         if (newState != editState.Edit)
@@ -208,8 +208,10 @@ public class Editor : MonoBehaviour
             if (_selected)
             {
                 _selected.GetComponent<Qubit>().Deselect();
+                _selected = null;
             }
         }
+
         if (newState == editState.Create)
         {
             Destroy(GhostBlock);

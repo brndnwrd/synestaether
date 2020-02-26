@@ -23,6 +23,8 @@ public class availableFace : MonoBehaviour
     private Color hoverColor;
     private Color restColor;
     private Color editColor;
+    private Color selectColor;
+
     //this is where  a block should be placed if this face
     // is clicked on
     private Vector3 pointsTowards; 
@@ -39,6 +41,7 @@ public class availableFace : MonoBehaviour
         hoverColor = new Color(1.0f, 0.0f, 0.0f, 1.0f);
         restColor = new Color(0.0f, 0.0f, 1.0f, 0.0f);
         editColor = new Color(0.0f, 1.0f, 0.0f, 0.2f);
+        selectColor = new Color(0.0f, 0.6f, 0.8f, 0.3f);
         _renderer.material.color = restColor;
         if ( transform.parent.name == "QFloor(Clone)" || transform.parent.name == "QFloor")
         {
@@ -102,16 +105,20 @@ public class availableFace : MonoBehaviour
         editState state = _editor.GetState();
         if (state == editState.Create)
         {
-            _renderer.material.color = hoverColor;
+//            _renderer.material.color = hoverColor;
             _editor.GhostBlock.transform.position = _editor.indexToPosition(_qubit.index + pointsTowards);
         }
-        else
+        /*else
         {
             if (transform.parent.childCount > 1)
             {
-                for (var i = 0; i < transform.parent.childCount; i++)
+                if (_editor._selected != _qubit.gameObject)
                 {
-                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = hoverColor;
+                    for (var i = 0; i < transform.parent.childCount; i++)
+                    {
+                        transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color =
+                            hoverColor;
+                    }
                 }
             }
             else
@@ -119,6 +126,7 @@ public class availableFace : MonoBehaviour
                 _renderer.material.color = restColor;
             }
         }
+*/
 
     }
 
@@ -131,20 +139,17 @@ public class availableFace : MonoBehaviour
         {
             _renderer.material.color = restColor;
         }
-        else
+        if (transform.parent.childCount > 1)
         {
-            if (transform.parent.childCount > 1)
+            for (var i = 0; i < transform.parent.childCount; i++)
             {
-                for (var i = 0; i < transform.parent.childCount; i++)
+                if (state == editState.Edit && transform.parent.parent.gameObject == _editor._selected)
                 {
-                    if (state == editState.Edit && transform.parent.parent.gameObject == _editor._selected)
-                    {
-                        transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = editColor;
-                    }
-                    else
-                    {
-                        transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = restColor;
-                    }
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = editColor;
+                }
+                else
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = restColor;
                 }
             }
         }
@@ -156,15 +161,25 @@ public class availableFace : MonoBehaviour
         editState state = _editor.GetState();
         if (state == editState.Create)
         {
+
             _renderer.material.color = hoverColor;
         }
         else
         {
-            if (transform.parent.childCount > 1)
+            if (_editor._selected == _qubit.gameObject)
             {
                 for (var i = 0; i < transform.parent.childCount; i++)
                 {
-                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = hoverColor;
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color =
+                        editColor;
+                }
+            }
+            else if (transform.parent.childCount > 1)
+            {
+                for (var i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color =
+                        selectColor;
                 }
             }
             else
