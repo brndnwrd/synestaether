@@ -51,6 +51,7 @@ public class Qubit : MonoBehaviour
                 thisChild.transform.Rotate(new Vector3(0, 90 * input, 0));
             }
         }
+        _editor.UpdateTransformHandle();
     }
 
     public void Translate(directions direction)
@@ -116,6 +117,7 @@ public class Qubit : MonoBehaviour
                 Debug.LogWarning("Invalid Direction, no movement");
                 return;
         }
+        _editor.UpdateTransformHandle();
     }
 
     // Start is called before the first frame update

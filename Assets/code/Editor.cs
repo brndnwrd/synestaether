@@ -132,8 +132,6 @@ public class Editor : MonoBehaviour
                 Resource[0] -= 1;
                 GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(Resource[0]);
             }
-            //this is a quick fix, need to change the prefab
-            // cant figure it out atm
         }
         else if (placingQubit.name == "QTurn")
         {
@@ -235,11 +233,15 @@ public class Editor : MonoBehaviour
             Destroy(GhostBlock);
             GhostBlock = MakeGhostBlock(placingQubit);
         }
-
-        if (newState != editState.Create)
+        else// (newState != editState.Create)
         {
             Destroy(GhostBlock);
             GhostBlock = null;
+        }
+
+        if (newState == editState.Rest && oldState == editState.Create)
+        {
+            Destroy(transformInstance);
         }
 
         _state = newState;
@@ -398,6 +400,7 @@ public class Editor : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.X))
             {
                 DestroyImmediate(_selected);
+                SetState(editState.Rest);
             }
         }
     }
