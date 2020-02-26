@@ -261,6 +261,8 @@ MonoBehaviour:
   size: 0
   placingQubit: {fileID: 3455124593961939990, guid: 62a85696b079440c7a5b9f986878f3b9,
     type: 3}
+  transformPrefab: {fileID: 7221315757420509866, guid: f3010de819f8645dc8ec82c90b217604,
+    type: 3}
   QFloorPrefab: {fileID: 4089818624856711600, guid: 7ec7bf8960c774a9cb4d9c6f2757e0d9,
     type: 3}
   QRailsPrefab: {fileID: 4709852752729780590, guid: a2ac8782d6a884dadaf010e38112baf3,
@@ -373,9 +375,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 255272831}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8ca3b5b9514ef8418109930b94cae0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 372339300b80d824eb8a30c851796cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level_button_prefab: {fileID: 2548994079020083373, guid: b949c9dd07c3d0c4cbae6b86d5e7492f,
+    type: 3}
 --- !u!1 &365109556
 GameObject:
   m_ObjectHideFlags: 0

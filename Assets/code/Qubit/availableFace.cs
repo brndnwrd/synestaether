@@ -232,7 +232,8 @@ public class availableFace : MonoBehaviour
             // Make sure we're not selecting part of the editor
             if (!this.transform.parent.transform.parent.gameObject.GetComponent<Editor>())
             {
-                _editor._selected = this.transform.parent.transform.parent.gameObject;
+                //_editor._selected = transform.parent.transform.parent.gameObject;
+                _editor.SelectQubit(transform.parent.transform.parent.gameObject);
 
                 for (int i = 0; i < transform.parent.childCount; i++)
                 {

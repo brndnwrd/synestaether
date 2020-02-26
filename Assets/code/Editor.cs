@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.AI;
 using Vector3 = UnityEngine.Vector3;
@@ -14,12 +15,17 @@ public enum editState
 }
 public class Editor : MonoBehaviour
 { 
+    [HideInInspector]
     public editState _state;
+    [HideInInspector]
     public GameObject _selected;
     //public GameObject CubePrefab;
     public GameObject[,,] _grid;
+    [HideInInspector]
     public int size; // number of rows/columns
     public GameObject placingQubit; // the Qubit from the menu were about to place
+    public GameObject transformPrefab;
+    private GameObject transformInstance;
     
     public GameObject QFloorPrefab;
     public GameObject QRailsPrefab;
@@ -74,7 +80,7 @@ public class Editor : MonoBehaviour
 
     private void RotateQubit()
     {
-
+        throw new NotImplementedException();
     }
 
     //ATM this function gets called by availableFace.cs
@@ -161,6 +167,17 @@ public class Editor : MonoBehaviour
         _grid[(int) newIndex.x, (int) newIndex.y, (int) newIndex.z] = newbie;
     }
 
+    public void SelectQubit(GameObject go)
+    {
+        _selected = go;
+
+        if (transformInstance == null)
+        {
+            transformInstance = Instantiate(transformPrefab);
+        }
+        transformInstance.transform.position = _selected.transform.position;
+        
+    }
     public void SwitchQubit(String name)
     {
         switch (name)
@@ -210,6 +227,7 @@ public class Editor : MonoBehaviour
                 _selected.GetComponent<Qubit>().Deselect();
                 _selected = null;
             }
+            Destroy(transformInstance);
         }
 
         if (newState == editState.Create)
@@ -255,6 +273,11 @@ public class Editor : MonoBehaviour
         //renderer.material.color = Color.blue;//new Color(0.0f, 0.0f, 1.0f, 0.2f);
 
         return newGhost;
+    }
+
+    public void UpdateTransformHandle()
+    {
+        transformInstance.transform.position = _selected.transform.position;
     }
 
     public int GetResource(String name)
