@@ -259,7 +259,7 @@ MonoBehaviour:
   _state: 1
   _selected: {fileID: 0}
   size: 0
-  placingQubit: {fileID: 3455124593961939990, guid: 62a85696b079440c7a5b9f986878f3b9,
+  placingQubit: {fileID: 7599323169715747204, guid: acd9f6c6c9a604197bc019bbab17ee17,
     type: 3}
   transformPrefab: {fileID: 7221315757420509866, guid: f3010de819f8645dc8ec82c90b217604,
     type: 3}
@@ -267,7 +267,7 @@ MonoBehaviour:
     type: 3}
   QRailsPrefab: {fileID: 4709852752729780590, guid: a2ac8782d6a884dadaf010e38112baf3,
     type: 3}
-  QEmiterPrefab: {fileID: 3455124593961939990, guid: 62a85696b079440c7a5b9f986878f3b9,
+  QEmiterPrefab: {fileID: 7599323169715747204, guid: acd9f6c6c9a604197bc019bbab17ee17,
     type: 3}
   QTurnPrefab: {fileID: 1993529849540996714, guid: e5f36ec48455c45f091dcb7d62985a7a,
     type: 3}
@@ -1781,7 +1781,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-6122
+  m_Name: pb_Mesh-1210
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

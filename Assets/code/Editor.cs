@@ -23,6 +23,7 @@ public class Editor : MonoBehaviour
     public GameObject[,,] _grid;
     [HideInInspector]
     public int size; // number of rows/columns
+    [HideInInspector]
     public GameObject placingQubit; // the Qubit from the menu were about to place
     public GameObject transformPrefab;
     private GameObject transformInstance;
@@ -46,6 +47,7 @@ public class Editor : MonoBehaviour
         MakeFloor();
         SetState(editState.Rest);
         Resource = new int[3]{15, 4, 2};
+        placingQubit = QRailsPrefab;
     }
 
     void Update()
@@ -83,7 +85,7 @@ public class Editor : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    //ATM this function gets called by availableFace.cs
+    //this function gets called by availableFace.cs
     public void PlaceQubit(Vector3 position)
     {
         if (placingQubit.name == "QRails2")
@@ -332,23 +334,23 @@ public class Editor : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            placingQubit = QRailsPrefab;
+            //placingQubit = QRailsPrefab;
             SwitchQubit("QRails");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            placingQubit = QTurnPrefab;
+            //placingQubit = QTurnPrefab;
             SwitchQubit("QTurns");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             //placingQubit = QEmiterPrefab;
-            placingQubit = QSlantPrefab;
+            //placingQubit = QSlantPrefab;
             SwitchQubit("QSlants");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            placingQubit = QFunnelPrefab;
+            //placingQubit = QFunnelPrefab;
             SwitchQubit("QFunnel");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha0))
