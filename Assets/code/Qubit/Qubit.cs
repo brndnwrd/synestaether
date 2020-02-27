@@ -31,6 +31,7 @@ public class Qubit : MonoBehaviour
     public void Initialize()
     {
         availableFaces = GetComponents<availableFace>().ToList();
+        _editor = GameObject.Find("Editor").GetComponent<Editor>();
     }
 
     public void Deselect()
@@ -123,11 +124,19 @@ public class Qubit : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
-        _editor = GameObject.Find("Editor").GetComponent<Editor>();
+        // Whatever you want to put here, put in 
+        // Initialize(), bc inheritance
+        Initialize();
     }
 
-    // Update is called once per frame
     public virtual void Update()
     {
+    }
+
+    public virtual void OnPlace()
+    {
+        // this method does nothing here
+        // but is overriden in derived classes
+        // so pls don't delete it thx
     }
 }

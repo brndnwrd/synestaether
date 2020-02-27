@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7599323169715747205}
-  - component: {fileID: 7803084906054272841}
+  - component: {fileID: 1572718688519333925}
   m_Layer: 0
   m_Name: QEmitter-v5
   m_TagString: Untagged
@@ -63,7 +63,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7803084906054272841
+--- !u!114 &1572718688519333925
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,13 +72,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7599323169715747204}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e784dc93550aa40f3a846d91d509e176, type: 3}
+  m_Script: {fileID: 11500000, guid: 86d725c57148b4dd5be4bcfa04e3edb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editable: 0
-  index: {x: 0, y: 0, z: 0}
-  availableFaces: []
-  _editor: {fileID: 0}
 --- !u!1 &8553225594726432729
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,14 +14,13 @@ public class MarbleEmitter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating(nameof(Shoot), 2.0f, rateOfFire);
         marbleparent = GameObject.Find("MarbleParent");
     }
 
-    // Update is called once per frame
-    void Update()
+    // called in QEmmiter.cs
+    public void StartShooting()
     {
-        
+        InvokeRepeating(nameof(Shoot), 2.0f, rateOfFire);
     }
 
     void Shoot()

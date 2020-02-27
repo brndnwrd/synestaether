@@ -85,8 +85,7 @@ public class Editor : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    //this function gets called by availableFace.cs
-    public void PlaceQubit(Vector3 position)
+    /*public void PlaceQubit(Vector3 position)
     {
         if (placingQubit.name == "QRails2")
         {
@@ -121,7 +120,7 @@ public class Editor : MonoBehaviour
         Transform parent = GameObject.Find("QBlocks").GetComponent<Transform>();
         var newCube = Instantiate(placingQubit, parent);
         newCube.transform.position = position;
-    }
+    }*/
 
     public void PlaceQubitByIndex(Vector3 newIndex)
     {
@@ -162,9 +161,11 @@ public class Editor : MonoBehaviour
         //newPos.y += 5f; 
         Transform par = GameObject.Find("QBlocks").GetComponent<Transform>();
         var newbie = Instantiate(placingQubit, par);
-        newbie.GetComponent<Qubit>().index = newIndex;
+        var newQ = newbie.GetComponent<Qubit>();
+        newQ.index = newIndex;
         newbie.transform.position = newPos;
         _grid[(int) newIndex.x, (int) newIndex.y, (int) newIndex.z] = newbie;
+        newQ.OnPlace();
     }
 
     public void SelectQubit(GameObject go)
