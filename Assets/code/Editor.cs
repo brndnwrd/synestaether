@@ -34,7 +34,6 @@ public class Editor : MonoBehaviour
     [HideInInspector] public GameObject GhostBlock;
     public Material GhostBlockMaterial;
     
-    private int[] Resource;
     private Level level;
 
     void Start()
@@ -44,7 +43,6 @@ public class Editor : MonoBehaviour
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         MakeFloor();
         SetState(editState.Rest);
-        Resource = new int[3]{15, 4, 2};
         placingQubit = QRailsPrefab;
     }
 
