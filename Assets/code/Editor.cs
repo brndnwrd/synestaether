@@ -15,16 +15,13 @@ public enum editState
 }
 public class Editor : MonoBehaviour
 { 
-    [HideInInspector]
-    public editState _state;
-    [HideInInspector]
-    public GameObject _selected;
+    /*[HideInInspector] commented this for debugging*/ public editState _state;
+    [HideInInspector] public GameObject _selected;
     //public GameObject CubePrefab;
     public GameObject[,,] _grid;
-    [HideInInspector]
-    public int size; // number of rows/columns
-    [HideInInspector]
-    public GameObject placingQubit; // the Qubit from the menu were about to place
+    private Camera _camera;
+    [HideInInspector] public int size; // number of rows/columns
+    [HideInInspector] public GameObject placingQubit; // the Qubit from the menu were about to place
     public GameObject transformPrefab;
     private GameObject transformInstance;
     
@@ -34,8 +31,7 @@ public class Editor : MonoBehaviour
     public GameObject QTurnPrefab;
     public GameObject QSlantPrefab;
     public GameObject QFunnelPrefab;
-    [HideInInspector]
-    public GameObject GhostBlock;
+    [HideInInspector] public GameObject GhostBlock;
     public Material GhostBlockMaterial;
     
     private int[] Resource;
@@ -44,6 +40,7 @@ public class Editor : MonoBehaviour
     {
         size = 15;
         _grid = new GameObject[size,size,size];
+        _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         MakeFloor();
         SetState(editState.Rest);
         Resource = new int[3]{15, 4, 2};
@@ -220,7 +217,14 @@ public class Editor : MonoBehaviour
     {
 //        Debug.Log("state now equal to " + newState);
         var oldState = _state;
-        
+
+        Ray rayToFace = _camera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(rayToFace, out RaycastHit currentFace))
+        {
+            currentFace.transform.gameObject.GetComponent<availableFace>().OnModeSwitch(oldState);
+        }
+
         if (newState != editState.Edit)
         {
             if (_selected)

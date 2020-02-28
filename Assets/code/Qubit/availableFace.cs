@@ -153,6 +153,10 @@ public class availableFace : MonoBehaviour
                 }
             }
         }
+        else
+        {
+
+        }
     }
 
     private void OnMouseOver()
@@ -161,7 +165,6 @@ public class availableFace : MonoBehaviour
         editState state = _editor.GetState();
         if (state == editState.Create)
         {
-
             _renderer.material.color = hoverColor;
         }
         else
@@ -185,6 +188,25 @@ public class availableFace : MonoBehaviour
             else
             {
                 _renderer.material.color = restColor;
+            }
+        }
+    }
+
+    public void OnModeSwitch(editState state)
+    {
+        if (state == editState.Create)
+        {
+            _renderer.material.color = restColor;
+        }
+        else
+        {
+            if (transform.parent.childCount > 1)
+            {
+                for (var i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color =
+                        restColor;
+                }
             }
         }
     }
