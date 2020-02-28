@@ -222,7 +222,10 @@ public class Editor : MonoBehaviour
 
         if (Physics.Raycast(rayToFace, out RaycastHit currentFace))
         {
-            currentFace.transform.gameObject.GetComponent<availableFace>().OnModeSwitch(oldState);
+            if (currentFace.transform.gameObject.GetComponent<availableFace>())
+            {
+                currentFace.transform.gameObject.GetComponent<availableFace>().OnModeSwitch(oldState);
+            }
         }
 
         if (newState != editState.Edit)
