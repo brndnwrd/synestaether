@@ -19,16 +19,15 @@ public class Serialize
         Transform = new float[Qubits_Transform.Length][];
         Rotation = new float[Qubits_Transform.Length];
         Resource = new int[] { 15, 4, 2 };
-        for (int i = 0; i < Qubits_Transform.Length; i++)
+        int j = 0;
+        for (int i = 0; i < Qubits_Transform.Length; i++,j++)
         {
             Transform body = Qubits_Transform[i].GetComponentsInChildren<Transform>()[1];
             string name = body.name;
-            if (name == "emiterCube")
+            if (name == "QEmitter")
             {
-                Block_Type[i] = 0;
-                Rotation[i] = body.rotation.eulerAngles.y + 90;
-                if (Rotation[i] == 360)
-                    Rotation[i] = 0;
+                Block_Type[j] = 0;
+                Rotation[j] = body.rotation.eulerAngles.y;
             }
             else if (name == "QRails")
             {
@@ -45,9 +44,13 @@ public class Serialize
                 Block_Type[i] = 3;
                 Rotation[i] = body.rotation.eulerAngles.y;
             }
+            else if (name == "QBucket")
+            {
+                Block_Type[i] = 4;
+                Rotation[i] = body.rotation.eulerAngles.y;
+            }
             Transform[i] = new float[] { Qubits_Transform[i].transform.position.x, Qubits_Transform[i].transform.position.y, Qubits_Transform[i].transform.position.z };
         }
-
         BinaryFormatter bf = new BinaryFormatter();
         int Level_index = 1;
         for (; ; Level_index++)
@@ -69,6 +72,9 @@ public class Serialize
         {
             if(Old_Qubits_Transform[i] != null)
                 GameObject.DestroyImmediate(Old_Qubits_Transform[i].gameObject);
+            GameObject TransTool = GameObject.Find("TransformTool_unbaked_(Clone)");
+            if(TransTool != null)
+                GameObject.DestroyImmediate(TransTool.gameObject);
         }
         if (File.Exists("Assets/levels/" + num.ToString()))
         {
@@ -98,23 +104,16 @@ public class Serialize
                 {
                     editor.SwitchQubit("QSlants");
                 }
+                else if (type == 4)
+                {
+                    editor.SwitchQubit("QFunnel");
+                }
                 editor.PlaceQubitByIndex(pos);
             }
             Qubit[] Qubits_Transform = GameObject.Find("QBlocks").GetComponentsInChildren<Qubit>();
             for (int i = 0; i < Qubits_Transform.Length; i++)
             {
-                if(loadData.Rotation[i] == 90)
-                {
-                    Qubits_Transform[i].Rotate(1);
-                }
-                else if(loadData.Rotation[i] == 270)
-                {
-                    Qubits_Transform[i].Rotate(3);
-                }
-                else if (loadData.Rotation[i] == 180)
-                {
-                    Qubits_Transform[i].Rotate(2);
-                }
+                Qubits_Transform[i].transform.Rotate(new Vector3(0, loadData.Rotation[i], 0));
             }
             return loadData.Resource;
         }
