@@ -291,7 +291,7 @@ public class Editor : MonoBehaviour
         transformInstance.transform.position = _selected.transform.position;
     }
 
-    public void UpdateLevel(Level new_level)
+    public void UpdateLevel(Level new_level = null)
     {
         level = new_level;
     }
