@@ -14,8 +14,6 @@ public class CreateButton : Button
         editor = GameObject.Find("Editor").GetComponent<Editor>();
         text = GetComponentInChildren<Text>();
         menu = GameObject.Find("LevelMenu").GetComponent<LevelMenu>();
-        if (text.text != "Level Menu")
-            text.text = "x " + editor.GetResource(this.name).ToString();
     }
 
     void Update()
@@ -42,8 +40,9 @@ public class CreateButton : Button
         }
         else if (this.name == "Serialize")
         {
-            Serialize save_level = new Serialize();
-            save_level.Save_Level();
+            ResourceMenu res_menu= GameObject.Find("ResourceMenu").GetComponent<ResourceMenu>();
+            res_menu.show();
+            SwitchState();
         }
         else if (this.name == "Level_Menu_Button")
         {

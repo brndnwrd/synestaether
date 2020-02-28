@@ -5,7 +5,6 @@ using UnityEngine;
 public class Level : MonoBehaviour
 {
     // Start is called before the first frame update
-    private float Win_State;
     private int[] Resource;
     private int Number; //index of levels
     private QBucket[] _buckets;
@@ -17,11 +16,14 @@ public class Level : MonoBehaviour
     
     public void Initialize(int num)
     {
-        Win_State = 0;
         Number = num;
         Serialize serialize = new Serialize();
         Resource = serialize.Load_Level(num);
         UpdateObjective();
+        GameObject.Find("Editor").GetComponent<Editor>().UpdateLevel(this);
+        GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(Resource[0]);
+        GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(Resource[1]);
+        GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(Resource[2]);
     }
 
     // Update is called once per frame
@@ -71,10 +73,14 @@ public class Level : MonoBehaviour
     {
         // load next level or somethin
     }
-
-    public void AddScore(float num)
+    
+    public int GetResource(int type)
     {
-        Win_State += num;
+        return Resource[type];
     }
 
+    public void SetResource(int type)
+    {
+        Resource[type] -= 1;
+    }
 }
