@@ -14,8 +14,6 @@ public class CreateButton : Button
         editor = GameObject.Find("Editor").GetComponent<Editor>();
         text = GetComponentInChildren<Text>();
         menu = GameObject.Find("LevelMenu").GetComponent<LevelMenu>();
-        if (text.text != "Level Menu")
-            text.text = "x " + editor.GetResource(this.name).ToString();
     }
 
     void Update()
