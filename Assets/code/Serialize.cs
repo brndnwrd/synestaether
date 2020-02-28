@@ -12,13 +12,13 @@ public class Serialize
     private float[] Rotation;
     private int[] Resource;
 
-    public void Save_Level()
+    public void Save_Level(int[] res)
     {
         Qubit[] Qubits_Transform = GameObject.Find("QBlocks").GetComponentsInChildren<Qubit>();
         Block_Type = new int[Qubits_Transform.Length];
         Transform = new float[Qubits_Transform.Length][];
         Rotation = new float[Qubits_Transform.Length];
-        Resource = new int[] { 15, 4, 2 };
+        Resource = res;
         int j = 0;
         for (int i = 0; i < Qubits_Transform.Length; i++,j++)
         {
@@ -68,14 +68,16 @@ public class Serialize
     public int[] Load_Level(int num)
     {
         Transform[] Old_Qubits_Transform = GameObject.Find("QBlocks").GetComponentsInChildren<Transform>();
-        for(int i = 1; i < Old_Qubits_Transform.Length; i++)
+        foreach(Transform qubit in Old_Qubits_Transform)
         {
-            if(Old_Qubits_Transform[i] != null)
-                GameObject.DestroyImmediate(Old_Qubits_Transform[i].gameObject);
-            GameObject TransTool = GameObject.Find("TransformTool_unbaked_(Clone)");
-            if(TransTool != null)
-                GameObject.DestroyImmediate(TransTool.gameObject);
+            if(qubit != null && qubit.name != "QBlocks")
+                Object.DestroyImmediate(qubit.gameObject);
         }
+        Editor editor = GameObject.Find("Editor").GetComponent<Editor>();
+        editor.UpdateLevel();
+        GameObject TransTool = GameObject.Find("TransformTool_unbaked_(Clone)");
+        if(TransTool != null)
+            GameObject.Destroy(TransTool.gameObject);
         if (File.Exists("Assets/levels/" + num.ToString()))
         {
             BinaryFormatter bf = new BinaryFormatter();
@@ -87,7 +89,6 @@ public class Serialize
                 Vector3 pos = new Vector3(loadData.Transform[i][0] / 10.0f, loadData.Transform[i][1] / 10.0f, loadData.Transform[i][2] / 10.0f);
                 int type = loadData.Block_Type[i];
                 float rotate = loadData.Rotation[i];
-                Editor editor = GameObject.Find("Editor").GetComponent<Editor>();
                 if(type == 0)
                 {
                     editor.SwitchQubit("QEmitter");
