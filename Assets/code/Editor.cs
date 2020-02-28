@@ -35,6 +35,7 @@ public class Editor : MonoBehaviour
     public Material GhostBlockMaterial;
     
     private int[] Resource;
+    private Level level;
 
     void Start()
     {
@@ -121,34 +122,37 @@ public class Editor : MonoBehaviour
 
     public void PlaceQubitByIndex(Vector3 newIndex)
     {
-        if (placingQubit.name == "QRails2")
+        if (level != null)
         {
-            if (Resource[0] == 0)
-                return;
-            else
+            if (placingQubit.name == "QRails-v4")
             {
-                Resource[0] -= 1;
-                GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(Resource[0]);
+                if (level.GetResource(0) == 0)
+                    return;
+                else
+                {
+                    level.SetResource(0);
+                    GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(level.GetResource(0));
+                }
             }
-        }
-        else if (placingQubit.name == "QTurn")
-        {
-            if (Resource[1] == 0)
-                return;
-            else
+            else if (placingQubit.name == "QTurn-v3")
             {
-                Resource[1] -= 1;
-                GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(Resource[1]);
+                if (level.GetResource(1) == 0)
+                    return;
+                else
+                {
+                    level.SetResource(1);
+                    GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
+                }
             }
-        }
-        else if (placingQubit.name == "QSlant-stepped")
-        {
-            if (Resource[2] == 0)
-                return;
-            else
+            else if (placingQubit.name == "QSlant-v4")
             {
-                Resource[2] -= 1;
-                GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(Resource[2]);
+                if (level.GetResource(2) == 0)
+                    return;
+                else
+                {
+                    level.SetResource(2);
+                    GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
+                }
             }
         }
         Vector3 newPos = indexToPosition(newIndex);
@@ -289,24 +293,9 @@ public class Editor : MonoBehaviour
         transformInstance.transform.position = _selected.transform.position;
     }
 
-    public int GetResource(String name)
+    public void UpdateLevel(Level new_level)
     {
-        if (name == "Button_Rail" && Resource != null)
-        {
-            return Resource[0];
-        }
-        else if (name == "Button_Turn" && Resource != null)
-        {
-            return Resource[1];
-        }
-        else if (name == "Button_Slant" && Resource != null)
-        {
-            return Resource[2];
-        }
-        else
-        {
-            return 0;
-        }
+        level = new_level;
     }
 
     // for until we have working GUI... and beyond?
