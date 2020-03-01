@@ -16,6 +16,7 @@ public class RotationRing : MonoBehaviour
     private Color hoverColor;
 
     private float destRot; // destination rotation, lerp to this number
+    private bool shouldUpdateCam = true;
     
     private bool _isDrag;
     private Vector3 _dragLast;
@@ -42,25 +43,46 @@ public class RotationRing : MonoBehaviour
 
     public void SetRotationDestination(float newAngle)
     {
-        destRot = newAngle;
+        if (shouldUpdateCam)
+        {
+            destRot = newAngle;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (shouldUpdateCam)
+        {
+            UpdateCam();
+        }
+    }
+
+    private void UpdateCam()
+    {
         float currRot = cameraParent.transform.rotation.eulerAngles.y;
-        
         if (_isDrag)
         {
             destRot += (_dragLast.x - Input.mousePosition.x)/100f;
         }
-
         var newRotQuat = Quaternion.Slerp(
             Quaternion.Euler(0f, currRot, 0f),
             Quaternion.Euler(0f, destRot, 0f),
             1f/invRotSpeed);
         transform.parent.transform.rotation = newRotQuat;
         cameraParent.transform.rotation = newRotQuat;
+    }
+
+    /*
+     * This function sets whether or not players interaction
+     * will effect the camera rotation. (state == true) => UI will work.
+     * The value sets where the camera's "destination" will be when it
+     * is allowed to update again.
+     */
+    public void SetUpdateCam(bool state, float value)
+    {
+        shouldUpdateCam = state;
+        destRot = value;
     }
 
     private void OnMouseOver()

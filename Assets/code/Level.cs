@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Level : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class Level : MonoBehaviour
     private int[] Resource;
     private int Number; //index of levels
     private QBucket[] _buckets;
-
+    private bool currLevelFinished = false;
+    private float camOldSize;
     void Start()
     {
         UpdateObjective();
@@ -29,7 +31,7 @@ public class Level : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (LevelIsComplete())
+        if (LevelIsComplete() && !currLevelFinished)
         {
             CompleteLevel();
         }    
@@ -50,19 +52,26 @@ public class Level : MonoBehaviour
 
     }
 
-    public void UpdateObjective()
+    private void UpdateObjective()
     {
-        _buckets = GetComponents<QBucket>();
+        _buckets = FindObjectsOfType<QBucket>();
     }
 
     public void CompleteLevel()
     {
+        currLevelFinished = true;
+        
+        var cg = FindObjectOfType<CanvasGroup>();
+        var cam = FindObjectOfType<Camera>();
         
         for (int i = 0; i < _buckets.Length; i++)
         {
             _buckets[i].OnLevelComplete();
         }
-        Debug.Log("Level Complete");
+
+        StartCoroutine(FadeUI(cg, 1f, 0f, 2f));
+        StartCoroutine(MoveCamera(cam));
+
         /* here we do all the fun stuff that
            happens when you beat a level,
            eventually call NextLevel
@@ -82,5 +91,60 @@ public class Level : MonoBehaviour
     public void SetResource(int type)
     {
         Resource[type] -= 1;
+    }
+
+    IEnumerator FadeUI(CanvasGroup cg, float startAlpha, float endAlpha, float fadeTime)
+    {
+
+        float timeSinceStart = 0;
+        while (true)
+        {
+            timeSinceStart += Time.deltaTime;
+            var completion =  timeSinceStart / fadeTime;
+            var newAlpha = Mathf.Lerp(startAlpha, endAlpha, completion );
+            cg.alpha = newAlpha;
+            if (timeSinceStart >= fadeTime)
+            {
+                break;
+            } 
+            
+            yield return new WaitForEndOfFrame();
+            
+        }
+    }
+
+    IEnumerator MoveCamera(Camera cam)
+    {
+        float moveTime = 5f; 
+        
+        camOldSize = cam.orthographicSize;
+        float newZoom = 70f;
+
+        FindObjectOfType<RotationRing>().SetUpdateCam(false, 0f);
+
+
+        float timeSinceStart = 0f;
+        var startRot = Quaternion.Euler(0f, cam.transform.parent.rotation.eulerAngles.y, 0f);
+        var destRot = Quaternion.Euler(0f, 0f, 0f);
+        
+        while ( true )
+        {
+            timeSinceStart += Time.deltaTime;
+            var completion = timeSinceStart / moveTime;
+            cam.orthographicSize = Mathf.SmoothStep(camOldSize, newZoom, completion);
+            
+            var rotAmt = Mathf.SmoothStep(0.0f, 1.0f, completion);
+            cam.transform.parent.rotation =
+                Quaternion.Slerp(startRot, destRot, rotAmt );
+            
+            if (timeSinceStart > moveTime)
+            {
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        
+        FindObjectOfType<RotationRing>().SetUpdateCam(true, 0f);
+        
     }
 }
