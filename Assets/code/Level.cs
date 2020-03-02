@@ -12,6 +12,10 @@ public class Level : MonoBehaviour
     private bool currLevelFinished = false;
     private float camOldSize;
     private string[] hotkeys;
+
+    public float closeZoom = 56f;
+    public float camZoomTime = 5f;
+    
     void Start()
     {
         UpdateObjective();
@@ -56,7 +60,9 @@ public class Level : MonoBehaviour
 
     private void UpdateObjective()
     {
+        currLevelFinished = false;
         _buckets = FindObjectsOfType<QBucket>();
+        //Debug.Log("Updating objective: " + _buckets.Length + " objectives");
     }
 
     public void CompleteLevel()
@@ -73,18 +79,13 @@ public class Level : MonoBehaviour
         }
 
         StartCoroutine(FadeUI(cg, 1f, 0f, 2f));
-        StartCoroutine(MoveCamera(cam));
-
-        /* here we do all the fun stuff that
-           happens when you beat a level,
-           eventually call NextLevel
-        */
+        StartCoroutine(MoveCamera(cam, closeZoom, camZoomTime));
+        var hangTime = camZoomTime + 3f; // this is the amount of time the UI is away b4 it comes back
+        StartCoroutine(MoveCamBack(cam, hangTime, camOldSize, camZoomTime));
+        StartCoroutine(FadeUIBack(cg,  hangTime, 0f, 1f, 2f));
+        Invoke(nameof(BringUpLevelMenu), hangTime+camZoomTime+1f);
     }
 
-    private void NextLevel()
-    {
-        // load next level or somethin
-    }
     
     public int GetResource(int type)
     {
@@ -121,12 +122,11 @@ public class Level : MonoBehaviour
         }
     }
 
-    IEnumerator MoveCamera(Camera cam)
+    IEnumerator MoveCamera(Camera cam, float newZoom, float moveTime)
     {
-        float moveTime = 5f; 
         
         camOldSize = cam.orthographicSize;
-        float newZoom = 70f;
+        //float newZoom = 70f;
 
         FindObjectOfType<RotationRing>().SetUpdateCam(false, 0f);
 
@@ -153,6 +153,24 @@ public class Level : MonoBehaviour
         }
         
         FindObjectOfType<RotationRing>().SetUpdateCam(true, 0f);
-        
+    }
+
+    IEnumerator MoveCamBack(Camera cam, float delayTime, float newZoom, float moveTime )
+    {
+        yield return new WaitForSeconds(delayTime);
+        StartCoroutine(MoveCamera(cam, newZoom, moveTime));
+    }
+
+    IEnumerator FadeUIBack(CanvasGroup cg, float delayTime, float startAlpha, float endAlpha, float fadeTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        StartCoroutine(FadeUI(cg, startAlpha, endAlpha, fadeTime));
+    }
+
+    private void BringUpLevelMenu()
+    {
+        var levelMenu = FindObjectOfType<LevelMenu>();
+        levelMenu.OpenMenu();
     }
 }

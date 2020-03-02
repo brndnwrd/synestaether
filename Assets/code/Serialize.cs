@@ -114,7 +114,8 @@ public class Serialize
             Qubit[] Qubits_Transform = GameObject.Find("QBlocks").GetComponentsInChildren<Qubit>();
             for (int i = 0; i < Qubits_Transform.Length; i++)
             {
-                Qubits_Transform[i].transform.Rotate(new Vector3(0, loadData.Rotation[i], 0));
+                //Qubits_Transform[i].transform.Rotate(new Vector3(0, loadData.Rotation[i], 0));
+                Qubits_Transform[i].Rotate((int)loadData.Rotation[i] / 90, true);
                 Qubits_Transform[i].SetEditable(true);
             }
             return loadData.Resource;

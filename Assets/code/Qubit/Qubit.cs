@@ -42,7 +42,7 @@ public class Qubit : MonoBehaviour
         }
     }
 
-    public void Rotate(int input)
+    public void Rotate(int input, bool isDeserialize = false)
     {
         for (int i = 0; i < this.transform.childCount; i++)
         {
@@ -52,7 +52,11 @@ public class Qubit : MonoBehaviour
                 thisChild.transform.Rotate(new Vector3(0, 90 * input, 0));
             }
         }
-        _editor.UpdateTransformHandle();
+
+        if (!isDeserialize)
+        {
+            _editor.UpdateTransformHandle();
+        }
     }
 
     public void Translate(directions direction)
