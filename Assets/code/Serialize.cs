@@ -65,7 +65,7 @@ public class Serialize
         file.Close();
     }
 
-    public int[] Load_Level(int num)
+    public int[] Load_Level(int num, Material LevelBlock)
     {
         Transform[] Old_Qubits_Transform = GameObject.Find("QBlocks").GetComponentsInChildren<Transform>();
         foreach(Transform qubit in Old_Qubits_Transform)
@@ -117,6 +117,8 @@ public class Serialize
                 //Qubits_Transform[i].transform.Rotate(new Vector3(0, loadData.Rotation[i], 0));
                 Qubits_Transform[i].Rotate((int)loadData.Rotation[i] / 90, true);
                 Qubits_Transform[i].SetEditable(true);
+                MeshRenderer mesh = Qubits_Transform[i].GetComponentInChildren<MeshRenderer>();
+                mesh.material = LevelBlock;
             }
             return loadData.Resource;
         }
