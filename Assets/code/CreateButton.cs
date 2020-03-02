@@ -72,7 +72,7 @@ public class CreateButton : Button
         text.text = "x " + num.ToString();
     }
 
-    public void ChangeLocation(int[] resource, int j)
+    public int ChangeLocation(int[] resource, int j)
     {
         if(index == 0)
         {
@@ -84,6 +84,7 @@ public class CreateButton : Button
             group.alpha = 0;
             group.interactable = false;
             group.blocksRaycasts = false;
+            return 0;
         }
         else
         {
@@ -103,6 +104,7 @@ public class CreateButton : Button
             trans.Translate(new Vector3(0, 19.833f * coe, 0));
             index -= coe;
             ChangeText(res);
+            return index;
         }
     }
 }
