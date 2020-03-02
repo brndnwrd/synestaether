@@ -329,6 +329,7 @@ MonoBehaviour:
   editable: 0
   index: {x: 0, y: 0, z: 0}
   availableFaces: []
+  _editor: {fileID: 0}
   allowedSaveUp: 0.2
   necessaryMarbleScore: 10
   decayPerSecond: 0.3
@@ -397,7 +398,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: d36dafce470034f3ea3b987a7525ecb8, type: 3}
+  - {fileID: 2100000, guid: bd543787ac7d68f4bbc521f97ac807d7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

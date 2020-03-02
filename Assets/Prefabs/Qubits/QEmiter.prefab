@@ -149,6 +149,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: emiterCube
       objectReference: {fileID: 0}
+    - target: {fileID: 6028507406173263959, guid: 3581044ce66d24ef181907dfefa9e87f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bd543787ac7d68f4bbc521f97ac807d7, type: 2}
     - target: {fileID: 9067563737894198190, guid: 3581044ce66d24ef181907dfefa9e87f,
         type: 3}
       propertyPath: m_LocalPosition.x
