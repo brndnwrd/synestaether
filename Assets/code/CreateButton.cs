@@ -8,12 +8,15 @@ public class CreateButton : Button
     Editor editor;
     Text text;
     LevelMenu menu;
+    CanvasGroup group;
+    int index;
     void Start()
     {
         onClick.AddListener(ButtonOnClickEvent);
         editor = GameObject.Find("Editor").GetComponent<Editor>();
         text = GetComponentInChildren<Text>();
         menu = GameObject.Find("LevelMenu").GetComponent<LevelMenu>();
+        group = this.GetComponent<CanvasGroup>();
     }
 
     void Update()
@@ -67,5 +70,39 @@ public class CreateButton : Button
     public void ChangeText(int num)
     {
         text.text = "x " + num.ToString();
+    }
+
+    public void ChangeLocation(int[] resource, int j)
+    {
+        if(index == 0)
+        {
+            index = j + 1;
+        }
+        int res = resource[j];
+        if(res == 0)
+        {
+            group.alpha = 0;
+            group.interactable = false;
+            group.blocksRaycasts = false;
+        }
+        else
+        {
+            group.alpha = 1;
+            group.interactable = true;
+            group.blocksRaycasts = true;
+            int zero = 0;
+            for(int i = 0; i < j; i++)
+            {
+                if(resource[i] == 0)
+                {
+                    zero++;
+                }
+            }
+            Transform trans = this.transform;
+            int coe = zero + index - j - 1;
+            trans.Translate(new Vector3(0, 19.833f * coe, 0));
+            index -= coe;
+            ChangeText(res);
+        }
     }
 }
