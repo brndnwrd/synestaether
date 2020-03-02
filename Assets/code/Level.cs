@@ -23,9 +23,9 @@ public class Level : MonoBehaviour
         Resource = serialize.Load_Level(num);
         UpdateObjective();
         GameObject.Find("Editor").GetComponent<Editor>().UpdateLevel(this);
-        GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(Resource[0]);
-        GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(Resource[1]);
-        GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(Resource[2]);
+        GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeLocation(Resource, 0);
+        GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeLocation(Resource, 1);
+        GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeLocation(Resource, 2);
     }
 
     // Update is called once per frame
