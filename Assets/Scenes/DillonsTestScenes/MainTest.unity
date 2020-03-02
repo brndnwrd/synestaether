@@ -1753,6 +1753,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae65707fde819420f98fcf4412e3ee21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  closeZoom: 56
+  camZoomTime: 5
+  LevelBlock: {fileID: 2100000, guid: bd543787ac7d68f4bbc521f97ac807d7, type: 2}
 --- !u!1 &834604493
 GameObject:
   m_ObjectHideFlags: 0
@@ -2476,7 +2479,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2924
+  m_Name: pb_Mesh-4272
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
