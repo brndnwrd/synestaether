@@ -63,7 +63,8 @@ public class Level : MonoBehaviour
     {
         currLevelFinished = true;
         
-        var cg = FindObjectOfType<CanvasGroup>();
+        //var cg = FindObjectOfType<CanvasGroup>();
+        var cg = GameObject.Find("Canvas").GetComponent<CanvasGroup>();
         var cam = FindObjectOfType<Camera>();
         
         for (int i = 0; i < _buckets.Length; i++)
