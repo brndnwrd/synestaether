@@ -332,26 +332,78 @@ public class Editor : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             //placingQubit = QRailsPrefab;
-            SwitchQubit("QRails");
+            if (level != null)
+            {
+                string name = level.GetHotkey(1);
+                if (name != null)
+                {
+                    SwitchQubit(name);
+                    if (_state != editState.Create)
+                        SetState(editState.Create);
+                }
+                else
+                    return;
+            }
+            else {
+                SwitchQubit("QRails");
+                if (_state != editState.Create)
+                    SetState(editState.Create);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             //placingQubit = QTurnPrefab;
-            SwitchQubit("QTurns");
+            if (level != null)
+            {
+                string name = level.GetHotkey(2);
+                if (name != null)
+                {
+                    SwitchQubit(name);
+                    if (_state != editState.Create)
+                        SetState(editState.Create);
+                }
+                else
+                    return;
+            }
+            else {
+                SwitchQubit("QTurns");
+                if (_state != editState.Create)
+                    SetState(editState.Create);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             //placingQubit = QEmiterPrefab;
             //placingQubit = QSlantPrefab;
-            SwitchQubit("QSlants");
+            if (level != null)
+            {
+                string name = level.GetHotkey(3);
+                if (name != null)
+                {
+                    SwitchQubit(name);
+                    if (_state != editState.Create)
+                        SetState(editState.Create);
+                }
+                else
+                    return;
+            }
+            else {
+                SwitchQubit("QSlants");
+                if (_state != editState.Create)
+                    SetState(editState.Create);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             //placingQubit = QFunnelPrefab;
+            if (_state != editState.Create)
+                SetState(editState.Create);
             SwitchQubit("QFunnel");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
+            if (_state != editState.Create)
+                SetState(editState.Create);
             SwitchQubit("QEmitter");
         }
         //else if (Input.GetMouseButton(1))
