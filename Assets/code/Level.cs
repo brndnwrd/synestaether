@@ -11,6 +11,7 @@ public class Level : MonoBehaviour
     private QBucket[] _buckets;
     private bool currLevelFinished = false;
     private float camOldSize;
+    private string[] hotkeys;
     void Start()
     {
         UpdateObjective();
@@ -22,10 +23,11 @@ public class Level : MonoBehaviour
         Serialize serialize = new Serialize();
         Resource = serialize.Load_Level(num);
         UpdateObjective();
+        hotkeys = new string[4];
         GameObject.Find("Editor").GetComponent<Editor>().UpdateLevel(this);
-        GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeLocation(Resource, 0);
-        GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeLocation(Resource, 1);
-        GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeLocation(Resource, 2);
+        hotkeys[GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeLocation(Resource, 0)] = "QRails";
+        hotkeys[GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeLocation(Resource, 1)] = "QTurns";
+        hotkeys[GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeLocation(Resource, 2)] = "QSlants";
     }
 
     // Update is called once per frame
@@ -91,6 +93,11 @@ public class Level : MonoBehaviour
     public void SetResource(int type)
     {
         Resource[type] -= 1;
+    }
+
+    public string GetHotkey(int num)
+    {
+        return hotkeys[num];
     }
 
     IEnumerator FadeUI(CanvasGroup cg, float startAlpha, float endAlpha, float fadeTime)
