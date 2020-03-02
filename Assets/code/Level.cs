@@ -15,6 +15,7 @@ public class Level : MonoBehaviour
 
     public float closeZoom = 56f;
     public float camZoomTime = 5f;
+    public Material LevelBlock;
     
     void Start()
     {
@@ -25,7 +26,7 @@ public class Level : MonoBehaviour
     {
         Number = num;
         Serialize serialize = new Serialize();
-        Resource = serialize.Load_Level(num);
+        Resource = serialize.Load_Level(num, LevelBlock);
         UpdateObjective();
         hotkeys = new string[4];
         GameObject.Find("Editor").GetComponent<Editor>().UpdateLevel(this);
