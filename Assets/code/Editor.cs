@@ -169,6 +169,8 @@ public class Editor : MonoBehaviour
 
     public void SelectQubit(GameObject go)
     {
+        if (go.GetComponent<Qubit>().editable == true)
+            return;
         _selected = go;
 
         if (transformInstance == null)
