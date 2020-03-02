@@ -1920,6 +1920,7 @@ GameObject:
   - component: {fileID: 908286826}
   - component: {fileID: 908286825}
   - component: {fileID: 908286828}
+  - component: {fileID: 908286829}
   m_Layer: 5
   m_Name: Button_Rail
   m_TagString: Untagged
@@ -2069,6 +2070,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &908286829
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908286823}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &925586047
 GameObject:
   m_ObjectHideFlags: 0
@@ -2710,6 +2723,7 @@ GameObject:
   - component: {fileID: 1249329666}
   - component: {fileID: 1249329665}
   - component: {fileID: 1249329664}
+  - component: {fileID: 1249329668}
   m_Layer: 5
   m_Name: Button_Slant
   m_TagString: Untagged
@@ -2859,6 +2873,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1249329662}
   m_CullTransparentMesh: 0
+--- !u!225 &1249329668
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249329662}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1253827081
 GameObject:
   m_ObjectHideFlags: 0
@@ -4613,6 +4639,7 @@ GameObject:
   - component: {fileID: 2115442717}
   - component: {fileID: 2115442716}
   - component: {fileID: 2115442715}
+  - component: {fileID: 2115442719}
   m_Layer: 5
   m_Name: Button_Turn
   m_TagString: Untagged
@@ -4762,6 +4789,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115442713}
   m_CullTransparentMesh: 0
+--- !u!225 &2115442719
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115442713}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2137139469
 GameObject:
   m_ObjectHideFlags: 0
