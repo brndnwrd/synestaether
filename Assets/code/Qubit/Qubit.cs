@@ -19,7 +19,7 @@ public enum directions
 
 public class Qubit : MonoBehaviour
 {
-    public bool editable;
+    public bool editable;//!!!True means uneditable, False means editable
     //public Vector2 orientation; //we don't need this, can just use unity transform
     public Vector3 index;
     public List<availableFace> availableFaces;
@@ -138,5 +138,10 @@ public class Qubit : MonoBehaviour
         // this method does nothing here
         // but is overriden in derived classes
         // so pls don't delete it thx
+    }
+
+    public void SetEditable(bool state)
+    {
+        editable = state;
     }
 }
