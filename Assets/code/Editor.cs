@@ -128,7 +128,7 @@ public class Editor : MonoBehaviour
                     return;
                 else
                 {
-                    level.SetResource(0);
+                    level.SetResource(0, -1);
                     GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(level.GetResource(0));
                 }
             }
@@ -138,7 +138,7 @@ public class Editor : MonoBehaviour
                     return;
                 else
                 {
-                    level.SetResource(1);
+                    level.SetResource(1, -1);
                     GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
                 }
             }
@@ -148,7 +148,7 @@ public class Editor : MonoBehaviour
                     return;
                 else
                 {
-                    level.SetResource(2);
+                    level.SetResource(2, -1);
                     GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
                 }
             }
@@ -446,6 +446,22 @@ public class Editor : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.X))
             {
+                string name = _selected.name;
+                if(name == "QRails-v4(Clone)")
+                {
+                    level.SetResource(0, 1);
+                    GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(level.GetResource(0));
+                }
+                else if (name == "QTurn-v3(Clone)")
+                {
+                    level.SetResource(1, 1);
+                    GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
+                }
+                else if (name == "QSlant-v4(Clone)")
+                {
+                    level.SetResource(2, 1);
+                    GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
+                }
                 DestroyImmediate(_selected);
                 SetState(editState.Rest);
             }
