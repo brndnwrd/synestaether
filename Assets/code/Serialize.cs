@@ -165,7 +165,8 @@ public class Serialize
     IEnumerator TransitionQubits(Serialize loadData, Material LevelBlock, Material LevelBlockFade)
     {
         var transitionTime = 3f;
-
+        Editor editor = GameObject.Find("Editor").GetComponent<Editor>();
+        editor.UpdateLevel();
         GameObject QBlocksObj = GameObject.Find("QBlocks");
         Transform[] oldQubitsTransform = QBlocksObj.GetComponentsInChildren<Transform>();
         MeshRenderer[] oldQubitsMR = GetQubitMeshRenderers(QBlocksObj.transform);
@@ -199,19 +200,17 @@ public class Serialize
                 break;
             }
 
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();   
         }
         
         yield return new WaitForSeconds(0.2f);
         
-        Editor editor = GameObject.Find("Editor").GetComponent<Editor>();
-        editor.UpdateLevel();
         GameObject TransTool = GameObject.Find("TransformTool_unbaked_(Clone)");
         if (TransTool != null)
         {
             GameObject.DestroyImmediate(TransTool.gameObject);
         }
-
+        
         if (QBlocksObj.transform.childCount > 0)
         {
             Debug.LogError("Old Qubits were not destroyed");
@@ -293,7 +292,7 @@ public class Serialize
 
         Level _level = GameObject.FindObjectOfType<Level>();
         _level.OnFinishLoading();
-
+        editor.UpdateLevel(_level);
     }
 
 
