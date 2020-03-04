@@ -9,8 +9,10 @@ public class LevelButton : MonoBehaviour
     Button level;
     int index;
     Level QLevel;
+    private LevelMenu _levelMenu;
     void Start()
     {
+        _levelMenu = GetComponentInParent<LevelMenu>();
         level = this.GetComponent<Button>();
         level.onClick.AddListener(selectLevel);
         index = System.Convert.ToInt32(this.GetComponentInChildren<Text>().text);
@@ -20,5 +22,6 @@ public class LevelButton : MonoBehaviour
     void selectLevel()
     {
         QLevel.Initialize(index);
+        _levelMenu.CloseMenu();
     }
 }
