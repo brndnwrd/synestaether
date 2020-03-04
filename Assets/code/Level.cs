@@ -16,6 +16,7 @@ public class Level : MonoBehaviour
     public float closeZoom = 56f;
     public float camZoomTime = 5f;
     public Material LevelBlock;
+    public Material LevelBlockFade;
     
     void Start()
     {
@@ -26,13 +27,21 @@ public class Level : MonoBehaviour
     {
         Number = num;
         Serialize serialize = new Serialize();
-        Resource = serialize.Load_Level(num, LevelBlock);
-        UpdateObjective();
+        //Resource = serialize.Load_Level(num, LevelBlock);
+        Resource = serialize.LoadLevel(num, LevelBlock, LevelBlockFade);
         hotkeys = new string[4];
         GameObject.Find("Editor").GetComponent<Editor>().UpdateLevel(this);
         hotkeys[GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeLocation(Resource, 0)] = "QRails";
         hotkeys[GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeLocation(Resource, 1)] = "QTurns";
         hotkeys[GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeLocation(Resource, 2)] = "QSlants";
+        KillMarbles();
+    }
+
+    public void OnFinishLoading()
+    {
+        // called AFTER the level is totally finished loading
+        UpdateObjective();
+        KillMarbles();
     }
 
     // Update is called once per frame
@@ -63,7 +72,7 @@ public class Level : MonoBehaviour
     {
         currLevelFinished = false;
         _buckets = FindObjectsOfType<QBucket>();
-        //Debug.Log("Updating objective: " + _buckets.Length + " objectives");
+        //Debug.Log("objective updated, this many buckets: " + _buckets.Length);
     }
 
     public void CompleteLevel()
@@ -101,6 +110,15 @@ public class Level : MonoBehaviour
     public string GetHotkey(int num)
     {
         return hotkeys[num];
+    }
+
+    private void KillMarbles()
+    {
+        Marble[] marbles = FindObjectsOfType<Marble>();
+        foreach (Marble m in marbles)
+        {
+            m.Die();
+        }
     }
 
     IEnumerator FadeUI(CanvasGroup cg, float startAlpha, float endAlpha, float fadeTime)

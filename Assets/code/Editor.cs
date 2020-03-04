@@ -154,10 +154,6 @@ public class Editor : MonoBehaviour
             }
         }
         Vector3 newPos = indexToPosition(newIndex);
-        // I think this has something to do with QFloor being
-        // centered in the center of its floor piece. It should
-        // be centered somehow above it. 0.5 above it I guess...
-        //newPos.y += 5f; 
         Transform par = GameObject.Find("QBlocks").GetComponent<Transform>();
         var newbie = Instantiate(placingQubit, par);
         var newQ = newbie.GetComponent<Qubit>();

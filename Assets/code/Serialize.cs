@@ -1,10 +1,14 @@
-﻿    using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using TreeEditor;
+using UnityEditor;
 using UnityEngine;
-[System.Serializable]
+using Object = UnityEngine.Object;
 
+[System.Serializable]
 public class Serialize
 {
     private int[] Block_Type;
@@ -20,7 +24,7 @@ public class Serialize
         Rotation = new float[Qubits_Transform.Length];
         Resource = res;
         int j = 0;
-        for (int i = 0; i < Qubits_Transform.Length; i++,j++)
+        for (int i = 0; i < Qubits_Transform.Length; i++, j++)
         {
             Transform body = Qubits_Transform[i].GetComponentsInChildren<Transform>()[1];
             string name = body.name;
@@ -49,51 +53,61 @@ public class Serialize
                 Block_Type[i] = 4;
                 Rotation[i] = body.rotation.eulerAngles.y;
             }
-            Transform[i] = new float[] { Qubits_Transform[i].transform.position.x, Qubits_Transform[i].transform.position.y, Qubits_Transform[i].transform.position.z };
+
+            Transform[i] = new float[]
+            {
+                Qubits_Transform[i].transform.position.x, Qubits_Transform[i].transform.position.y,
+                Qubits_Transform[i].transform.position.z
+            };
         }
+
         BinaryFormatter bf = new BinaryFormatter();
         int Level_index = 1;
-        for (; ; Level_index++)
+        for (;; Level_index++)
         {
             if (!File.Exists("Assets/levels/" + Level_index.ToString()))
             {
                 break;
             }
         }
+
         FileStream file = File.Create("Assets/levels/" + Level_index.ToString());
         bf.Serialize(file, this);
         file.Close();
     }
 
+
     public int[] Load_Level(int num, Material LevelBlock)
     {
         Transform[] Old_Qubits_Transform = GameObject.Find("QBlocks").GetComponentsInChildren<Transform>();
-        foreach(Transform qubit in Old_Qubits_Transform)
+        foreach (Transform qubit in Old_Qubits_Transform)
         {
-            if(qubit != null && qubit.name != "QBlocks")
+            if (qubit != null && qubit.name != "QBlocks")
                 Object.DestroyImmediate(qubit.gameObject);
         }
+
         Editor editor = GameObject.Find("Editor").GetComponent<Editor>();
         editor.UpdateLevel();
         GameObject TransTool = GameObject.Find("TransformTool_unbaked_(Clone)");
-        if(TransTool != null)
+        if (TransTool != null)
             GameObject.Destroy(TransTool.gameObject);
         if (File.Exists("Assets/levels/" + num.ToString()))
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open("Assets/levels/" + num.ToString(), FileMode.Open);
-            Serialize loadData = (Serialize)bf.Deserialize(file);
+            Serialize loadData = (Serialize) bf.Deserialize(file);
             file.Close();
             for (int i = 0; i < loadData.Transform.Length; i++)
             {
-                Vector3 pos = new Vector3(loadData.Transform[i][0] / 10.0f, loadData.Transform[i][1] / 10.0f, loadData.Transform[i][2] / 10.0f);
+                Vector3 pos = new Vector3(loadData.Transform[i][0] / 10.0f, loadData.Transform[i][1] / 10.0f,
+                    loadData.Transform[i][2] / 10.0f);
                 int type = loadData.Block_Type[i];
                 float rotate = loadData.Rotation[i];
-                if(type == 0)
+                if (type == 0)
                 {
                     editor.SwitchQubit("QEmitter");
                 }
-                else if(type == 1)
+                else if (type == 1)
                 {
                     editor.SwitchQubit("QRails");
                 }
@@ -109,19 +123,193 @@ public class Serialize
                 {
                     editor.SwitchQubit("QFunnel");
                 }
+
                 editor.PlaceQubitByIndex(pos);
             }
+
             Qubit[] Qubits_Transform = GameObject.Find("QBlocks").GetComponentsInChildren<Qubit>();
             for (int i = 0; i < Qubits_Transform.Length; i++)
             {
                 //Qubits_Transform[i].transform.Rotate(new Vector3(0, loadData.Rotation[i], 0));
-                Qubits_Transform[i].Rotate((int)loadData.Rotation[i] / 90, true);
+                Qubits_Transform[i].Rotate((int) loadData.Rotation[i] / 90, true);
                 Qubits_Transform[i].SetEditable(true);
                 MeshRenderer mesh = Qubits_Transform[i].GetComponentInChildren<MeshRenderer>();
                 mesh.material = LevelBlock;
             }
+
             return loadData.Resource;
         }
+
         return null;
+    }
+
+    public int[] LoadLevel(int num, Material LevelBlock, Material LevelBlockFade)
+    {
+        if (!File.Exists("Assets/levels/" + num.ToString()))
+        {
+            Debug.LogError("No Such Level File: " + num);
+        }
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Open("Assets/levels/" + num.ToString(), FileMode.Open);
+        Serialize loadData = (Serialize) bf.Deserialize(file);
+        file.Close();
+        Level _level = GameObject.FindObjectOfType<Level>();
+        
+        //you need a monobehavior to do this so why not the level obj
+        _level.StartCoroutine(TransitionQubits(loadData, LevelBlock, LevelBlockFade));
+
+        return loadData.Resource;
+    }
+
+    IEnumerator TransitionQubits(Serialize loadData, Material LevelBlock, Material LevelBlockFade)
+    {
+        var transitionTime = 3f;
+
+        GameObject QBlocksObj = GameObject.Find("QBlocks");
+        Transform[] oldQubitsTransform = QBlocksObj.GetComponentsInChildren<Transform>();
+        MeshRenderer[] oldQubitsMR = GetQubitMeshRenderers(QBlocksObj.transform);
+        foreach (var mr in oldQubitsMR)
+        {
+            mr.material = LevelBlockFade;
+        }
+        var timeSinceStart = 0f;
+        while (true)
+        {
+            timeSinceStart += Time.deltaTime;
+            var alpha = Mathf.Lerp(1f, 0f, 2 * timeSinceStart / transitionTime);
+            foreach (var mr in oldQubitsMR)
+            {
+                Color oldCol = mr.material.color;
+                var newCol = new Color(oldCol.r, oldCol.g, oldCol.b, alpha);
+                mr.material.color = newCol;
+            }
+
+            if (timeSinceStart > transitionTime / 2)
+            {
+                foreach (Transform qubit in oldQubitsTransform)
+                {
+                    if (qubit != null && qubit.name != "QBlocks")
+                    {
+                        // this MUST be DestroyImmediate
+                        Object.DestroyImmediate(qubit.gameObject);
+                    }
+                }
+
+                break;
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
+        
+        yield return new WaitForSeconds(0.2f);
+        
+        Editor editor = GameObject.Find("Editor").GetComponent<Editor>();
+        editor.UpdateLevel();
+        GameObject TransTool = GameObject.Find("TransformTool_unbaked_(Clone)");
+        if (TransTool != null)
+        {
+            GameObject.DestroyImmediate(TransTool.gameObject);
+        }
+
+        if (QBlocksObj.transform.childCount > 0)
+        {
+            Debug.LogError("Old Qubits were not destroyed");
+        }
+        else
+        {
+            for (int i = 0; i < loadData.Transform.Length; i++)
+            {
+                Vector3 pos = new Vector3(loadData.Transform[i][0] / 10.0f, loadData.Transform[i][1] / 10.0f,
+                    loadData.Transform[i][2] / 10.0f);
+                int type = loadData.Block_Type[i];
+                float rotate = loadData.Rotation[i];
+                if (type == 0)
+                {
+                    editor.SwitchQubit("QEmitter");
+                }
+                else if (type == 1)
+                {
+                    editor.SwitchQubit("QRails");
+                }
+                else if (type == 2)
+                {
+                    editor.SwitchQubit("QTurns");
+                }
+                else if (type == 3)
+                {
+                    editor.SwitchQubit("QSlants");
+                }
+                else if (type == 4)
+                {
+                    editor.SwitchQubit("QFunnel");
+                }
+
+                editor.PlaceQubitByIndex(pos);
+            }
+
+            Qubit[] newQubits = GameObject.Find("QBlocks").GetComponentsInChildren<Qubit>();
+            for (int i = 0; i < newQubits.Length; i++)
+            {
+                //Qubits_Transform[i].transform.Rotate(new Vector3(0, loadData.Rotation[i], 0));
+                newQubits[i].Rotate((int) loadData.Rotation[i] / 90, true);
+                newQubits[i].SetEditable(true);
+                MeshRenderer mesh = newQubits[i].GetComponentInChildren<MeshRenderer>();
+                mesh.material = LevelBlock;
+            }
+
+            MeshRenderer[] newQubitsMR = GetQubitMeshRenderers(QBlocksObj.transform);
+            foreach (var mr in newQubitsMR)
+            {
+                mr.material = LevelBlockFade;
+            }
+
+            //fade in here
+            timeSinceStart = 0f;
+            while (true)
+            {
+                timeSinceStart += Time.deltaTime;
+                var alpha = Mathf.Lerp(0f, 1f, 2 * timeSinceStart / transitionTime);
+                foreach (var mr in newQubitsMR)
+                {
+                    Color oldCol = mr.material.color;
+                    var newCol = new Color(oldCol.r, oldCol.g, oldCol.b, alpha);
+                    mr.material.color = newCol;
+                }
+
+                if (timeSinceStart > transitionTime / 2)
+                {
+                    break;
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
+            foreach (var mr in newQubitsMR)
+            {
+                mr.material = LevelBlock;
+            }
+
+        }
+
+        Level _level = GameObject.FindObjectOfType<Level>();
+        _level.OnFinishLoading();
+
+    }
+
+
+    private MeshRenderer[] GetQubitMeshRenderers(Transform parent)
+    {
+        Qubit[] qs = parent.GetComponentsInChildren<Qubit>();
+        var result = new MeshRenderer[qs.Length];
+        for (int i = 0; i < qs.Length; i++)
+        {
+            result[i] = qs[i].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>(); //phew!
+            if (result[i] == null)
+            {
+                Debug.LogError("No Mesh Renderer found on Qubit at index: " + i);
+            }
+        }
+
+        return result;
     }
 }
