@@ -30,7 +30,7 @@ public class Level : MonoBehaviour
         //Resource = serialize.Load_Level(num, LevelBlock);
         Resource = serialize.LoadLevel(num, LevelBlock, LevelBlockFade);
         hotkeys = new string[4];
-        GameObject.Find("Editor").GetComponent<Editor>().UpdateLevel(this);
+        //GameObject.Find("Editor").GetComponent<Editor>().UpdateLevel(this);
         hotkeys[GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeLocation(Resource, 0)] = "QRails";
         hotkeys[GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeLocation(Resource, 1)] = "QTurns";
         hotkeys[GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeLocation(Resource, 2)] = "QSlants";
@@ -102,9 +102,9 @@ public class Level : MonoBehaviour
         return Resource[type];
     }
 
-    public void SetResource(int type)
+    public void SetResource(int type, int num)
     {
-        Resource[type] -= 1;
+        Resource[type] += num;
     }
 
     public string GetHotkey(int num)
@@ -191,5 +191,10 @@ public class Level : MonoBehaviour
     {
         var levelMenu = FindObjectOfType<LevelMenu>();
         levelMenu.OpenMenu();
+    }
+
+    public int GetIndex()
+    {
+        return Number;
     }
 }
