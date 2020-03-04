@@ -60,6 +60,13 @@ public class CreateButton : Button
                 SwitchState();
             }
         }
+        else if (this.name == "Reset")
+        {
+            editor.SetState(editState.Rest);
+            Level currentLevel = GameObject.Find("Level").GetComponent<Level>();
+            int index = currentLevel.GetIndex();
+            currentLevel.Initialize(index);
+        }
     }
 
     public void SwitchState()
