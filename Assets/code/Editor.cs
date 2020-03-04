@@ -308,7 +308,7 @@ public class Editor : MonoBehaviour
         {
             SetState(editState.Create);
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1))
         {
             switch (_state)
             {
