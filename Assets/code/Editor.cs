@@ -34,7 +34,7 @@ public class Editor : MonoBehaviour
     [HideInInspector] public GameObject GhostBlock;
     public Material GhostBlockMaterial;
     
-    private Level level;
+    public Level level;
 
     void Start()
     {

@@ -24,6 +24,7 @@ public class availableFace : MonoBehaviour
     private Color restColor;
     private Color editColor;
     private Color selectColor;
+    private Color invalidColor;
 
     //this is where  a block should be placed if this face
     // is clicked on
@@ -38,10 +39,11 @@ public class availableFace : MonoBehaviour
         _renderer = GetComponent<MeshRenderer>();
         _transform = GetComponent<Transform>();
         // DONE: transparency
-        hoverColor = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+        hoverColor = new Color(0.1f, 0.4f, 0.1f, 0.5f);
         restColor = new Color(0.0f, 0.0f, 1.0f, 0.0f);
         editColor = new Color(0.0f, 1.0f, 0.0f, 0.2f);
         selectColor = new Color(0.0f, 0.6f, 0.8f, 0.3f);
+        invalidColor = new Color(0.7f, 0.2f, 0.2f, 0.7f);
         _renderer.material.color = restColor;
         if ( transform.parent.name == "QFloor(Clone)" || transform.parent.name == "QFloor")
         {
@@ -165,7 +167,42 @@ public class availableFace : MonoBehaviour
         editState state = _editor.GetState();
         if (state == editState.Create)
         {
-            _renderer.material.color = hoverColor;
+            if (_editor.level != null)
+            {
+                switch (_editor.placingQubit.name)
+                {
+                    case "QRails-v4":
+                        if (_editor.level.GetResource(0) == 0)
+                            _renderer.material.color = invalidColor;
+                        else
+                        {
+                            _renderer.material.color = hoverColor;
+                        }
+                        break;
+                    case "QTurn-v3":
+                        if (_editor.level.GetResource(1) == 0)
+                            _renderer.material.color = invalidColor;
+                        else
+                        {
+                            _renderer.material.color = hoverColor;
+                        }
+                        break;
+                    case "QSlant-v4":
+                        if (_editor.level.GetResource(2) == 0)
+                            _renderer.material.color = invalidColor;
+                        else
+                        {
+                            _renderer.material.color = hoverColor;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                _renderer.material.color = hoverColor;
+            }
         }
         else
         {
@@ -177,7 +214,7 @@ public class availableFace : MonoBehaviour
                         editColor;
                 }
             }
-            else if (transform.parent.childCount > 1)
+            else if (transform.parent.childCount > 1 && !_qubit.editable)
             {
                 for (var i = 0; i < transform.parent.childCount; i++)
                 {
