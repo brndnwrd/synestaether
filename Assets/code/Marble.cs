@@ -34,7 +34,7 @@ public class Marble : MonoBehaviour
         }
     }
 
-    void Die()
+    public void Die()
     {
         isDead = true;
         _collider.isTrigger = true;

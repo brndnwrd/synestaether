@@ -33,6 +33,7 @@ public class Level : MonoBehaviour
         hotkeys[GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeLocation(Resource, 0)] = "QRails";
         hotkeys[GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeLocation(Resource, 1)] = "QTurns";
         hotkeys[GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeLocation(Resource, 2)] = "QSlants";
+        KillMarbles();
     }
 
     // Update is called once per frame
@@ -101,6 +102,15 @@ public class Level : MonoBehaviour
     public string GetHotkey(int num)
     {
         return hotkeys[num];
+    }
+
+    private void KillMarbles()
+    {
+        Marble[] marbles = FindObjectsOfType<Marble>();
+        foreach (Marble m in marbles)
+        {
+            m.Die();
+        }
     }
 
     IEnumerator FadeUI(CanvasGroup cg, float startAlpha, float endAlpha, float fadeTime)
