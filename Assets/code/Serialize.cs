@@ -28,6 +28,7 @@ public class Serialize
         {
             Transform body = Qubits_Transform[i].GetComponentsInChildren<Transform>()[1];
             string name = body.name;
+            Debug.Log(name);
             if (name == "QEmitter")
             {
                 Block_Type[j] = 0;
@@ -51,6 +52,11 @@ public class Serialize
             else if (name == "QBucket")
             {
                 Block_Type[i] = 4;
+                Rotation[i] = body.rotation.eulerAngles.y;
+            }
+            else if (name == "QBottleneck")
+            {
+                Block_Type[i] = 5;
                 Rotation[i] = body.rotation.eulerAngles.y;
             }
 
@@ -242,6 +248,10 @@ public class Serialize
                 else if (type == 4)
                 {
                     editor.SwitchQubit("QFunnel");
+                }
+                else if (type == 5)
+                {
+                    editor.SwitchQubit("QBottleNeck");
                 }
 
                 editor.PlaceQubitByIndex(pos);
