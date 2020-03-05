@@ -34,6 +34,7 @@ public class Level : MonoBehaviour
         hotkeys[GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeLocation(Resource, 0)] = "QRails";
         hotkeys[GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeLocation(Resource, 1)] = "QTurns";
         hotkeys[GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeLocation(Resource, 2)] = "QSlants";
+        hotkeys[GameObject.Find("Button_BottleNeck").GetComponent<CreateButton>().ChangeLocation(Resource, 3)] = "QBottleNeck";
         KillMarbles();
     }
 
