@@ -31,6 +31,7 @@ public class Editor : MonoBehaviour
     public GameObject QTurnPrefab;
     public GameObject QSlantPrefab;
     public GameObject QFunnelPrefab;
+    public GameObject QBottleNeckPrefab;
     [HideInInspector] public GameObject GhostBlock;
     public Material GhostBlockMaterial;
     
@@ -152,6 +153,16 @@ public class Editor : MonoBehaviour
                     GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
                 }
             }
+            else if (placingQubit.name == "QBottleneck")
+            {
+                if (level.GetResource(3) == 0)
+                    return;
+                else
+                {
+                    level.SetResource(3, -1);
+                    GameObject.Find("Button_BottleNeck").GetComponent<CreateButton>().ChangeText(level.GetResource(3));
+                }
+            }
         }
         Vector3 newPos = indexToPosition(newIndex);
         Transform par = GameObject.Find("QBlocks").GetComponent<Transform>();
@@ -191,6 +202,9 @@ public class Editor : MonoBehaviour
                 break;
             case "QEmitter":
                 placingQubit = QEmiterPrefab;
+                break;
+            case "QBottleNeck":
+                placingQubit = QBottleNeckPrefab;
                 break;
             case "QFunnel":
                 placingQubit = QFunnelPrefab;
@@ -461,6 +475,11 @@ public class Editor : MonoBehaviour
                 {
                     level.SetResource(2, 1);
                     GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
+                }
+                else if (name == "QBottleneck(Clone)")
+                {
+                    level.SetResource(3, 1);
+                    GameObject.Find("Button_BottleNeck").GetComponent<CreateButton>().ChangeText(level.GetResource(3));
                 }
                 DestroyImmediate(_selected);
                 SetState(editState.Rest);
