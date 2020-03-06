@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.AI;
+using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
 public enum editState
@@ -34,6 +35,7 @@ public class Editor : MonoBehaviour
     public GameObject QCubePrefab;
     [HideInInspector] public GameObject GhostBlock;
     public Material GhostBlockMaterial;
+    private float currentRotation = 0f; //store the angles
     
     public Level level;
 
@@ -82,43 +84,6 @@ public class Editor : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    /*public void PlaceQubit(Vector3 position)
-    {
-        if (placingQubit.name == "QRails2")
-        {
-            if (Resource[0] == 0)
-                return;
-            else
-            {
-                position.y -= 5f;
-                Resource[0] -= 1;
-            }
-            //this is a quick fix, need to change the prefab
-            // cant figure it out atm
-        }
-        else if (placingQubit.name == "QTurn")
-        {
-            if (Resource[1] == 0)
-                return;
-            else
-            {
-                Resource[1] -= 1;
-            }
-        }
-        else if (placingQubit.name == "QSlant-stepped")
-        {
-            if (Resource[2] == 0)
-                return;
-            else
-            {
-                Resource[2] -= 1;
-            }
-        }
-        Transform parent = GameObject.Find("QBlocks").GetComponent<Transform>();
-        var newCube = Instantiate(placingQubit, parent);
-        newCube.transform.position = position;
-    }*/
-
     public void PlaceQubitByIndex(Vector3 newIndex)
     {
         if (level != null)
@@ -160,6 +125,10 @@ public class Editor : MonoBehaviour
         var newQ = newbie.GetComponent<Qubit>();
         newQ.index = newIndex;
         newbie.transform.position = newPos;
+        if (GhostBlock != null)
+        {
+            newbie.transform.rotation = GhostBlock.transform.rotation;
+        }
         _grid[(int) newIndex.x, (int) newIndex.y, (int) newIndex.z] = newbie;
         newQ.OnPlace();
     }
@@ -287,8 +256,45 @@ public class Editor : MonoBehaviour
         newGhost.GetComponentInChildren<MeshRenderer>().material = new Material(GhostBlockMaterial);
         //MeshRenderer[] renderer = newGhost.GetComponentsInChildren<MeshRenderer>();
         //renderer.material.color = Color.blue;//new Color(0.0f, 0.0f, 1.0f, 0.2f);
-
+        newGhost.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
         return newGhost;
+    }
+
+    /*
+     *  This function allows users to rotate
+     *  before lacing a block
+     *  and to rotate a selected block
+     *  with keys.
+     *  Makes block rotation persistent 
+     *  between placements
+     */
+    public void RotateKeys(bool CW ) // or left
+    {
+        int angle = 90;
+        if (CW)
+        {
+            angle *= -1;
+        }
+        
+        // ok. Ik this is weird, but hear me out:
+        currentRotation = Quaternion.Euler(0f, currentRotation + angle, 0f).eulerAngles.y; 
+
+        GameObject toRotate = null;
+        if (GhostBlock != null)
+        {
+            toRotate = GhostBlock;
+        }
+        else if (_selected != null)
+        {
+            toRotate = _selected;
+        }
+        else
+        {
+            // nothing to rotate
+            return;
+        }
+
+        toRotate.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
     }
 
     public void UpdateTransformHandle()
@@ -306,8 +312,12 @@ public class Editor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            SetState(editState.Edit);
+            RotateKeys(true);
         } 
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            RotateKeys(false);
+        }
         else if (Input.GetKeyDown(KeyCode.C))
         {
             SetState(editState.Create);

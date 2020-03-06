@@ -18,8 +18,9 @@ public class TransformHandleRot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        _editor._selected.GetComponent<Qubit>().Rotate(rotAngle);
+        //_editor._selected.GetComponent<Qubit>().Rotate(rotAngle);
         _editor.UpdateTransformHandle();
+        _editor.RotateKeys( rotAngle < 0);
     }
 
     private void OnMouseEnter()
