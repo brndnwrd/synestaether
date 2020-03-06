@@ -32,6 +32,7 @@ public class Editor : MonoBehaviour
     public GameObject QSlantPrefab;
     public GameObject QFunnelPrefab;
     public GameObject QBottleNeckPrefab;
+    public GameObject QCubePrefab;
     [HideInInspector] public GameObject GhostBlock;
     public Material GhostBlockMaterial;
     
@@ -208,6 +209,9 @@ public class Editor : MonoBehaviour
                 break;
             case "QFunnel":
                 placingQubit = QFunnelPrefab;
+                break;
+            case "QCube":
+                placingQubit = QCubePrefab;
                 break;
         }
 
@@ -405,16 +409,55 @@ public class Editor : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            //placingQubit = QFunnelPrefab;
-            if (_state != editState.Create)
-                SetState(editState.Create);
-            SwitchQubit("QFunnel");
+            //placingQubit = QEmiterPrefab;
+            //placingQubit = QSlantPrefab;
+            if (level != null)
+            {
+                string name = level.GetHotkey(4);
+                if (name != null)
+                {
+                    SwitchQubit(name);
+                    if (_state != editState.Create)
+                        SetState(editState.Create);
+                }
+                else
+                    return;
+            }
+            else
+            {
+                SwitchQubit("QBottleNeck");
+                if (_state != editState.Create)
+                    SetState(editState.Create);
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            if (level == null)
+            {
+                //placingQubit = QFunnelPrefab;
+                if (_state != editState.Create)
+                    SetState(editState.Create);
+                SwitchQubit("QCube");
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            if (level == null)
+            {
+                //placingQubit = QFunnelPrefab;
+                if (_state != editState.Create)
+                    SetState(editState.Create);
+                SwitchQubit("QFunnel");
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            if (_state != editState.Create)
-                SetState(editState.Create);
-            SwitchQubit("QEmitter");
+            if (level == null)
+            {
+                if (_state != editState.Create)
+                    SetState(editState.Create);
+                SwitchQubit("QEmitter");
+            }
         }
         //else if (Input.GetMouseButton(1))
         //{
@@ -460,26 +503,29 @@ public class Editor : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.X))
             {
-                string name = _selected.name;
-                if(name == "QRails-v4(Clone)")
+                if (level != null)
                 {
-                    level.SetResource(0, 1);
-                    GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(level.GetResource(0));
-                }
-                else if (name == "QTurn-v3(Clone)")
-                {
-                    level.SetResource(1, 1);
-                    GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
-                }
-                else if (name == "QSlant-v4(Clone)")
-                {
-                    level.SetResource(2, 1);
-                    GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
-                }
-                else if (name == "QBottleneck(Clone)")
-                {
-                    level.SetResource(3, 1);
-                    GameObject.Find("Button_BottleNeck").GetComponent<CreateButton>().ChangeText(level.GetResource(3));
+                    string name = _selected.name;
+                    if (name == "QRails-v4(Clone)")
+                    {
+                        level.SetResource(0, 1);
+                        GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(level.GetResource(0));
+                    }
+                    else if (name == "QTurn-v3(Clone)")
+                    {
+                        level.SetResource(1, 1);
+                        GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
+                    }
+                    else if (name == "QSlant-v4(Clone)")
+                    {
+                        level.SetResource(2, 1);
+                        GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
+                    }
+                    else if (name == "QBottleneck(Clone)")
+                    {
+                        level.SetResource(3, 1);
+                        GameObject.Find("Button_BottleNeck").GetComponent<CreateButton>().ChangeText(level.GetResource(3));
+                    }
                 }
                 DestroyImmediate(_selected);
                 SetState(editState.Rest);
