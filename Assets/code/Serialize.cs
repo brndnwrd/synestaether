@@ -59,6 +59,11 @@ public class Serialize
                 Block_Type[i] = 5;
                 Rotation[i] = body.rotation.eulerAngles.y;
             }
+            else if (name == "QCube")
+            {
+                Block_Type[i] = 6;
+                Rotation[i] = body.rotation.eulerAngles.y;
+            }
 
             Transform[i] = new float[]
             {
@@ -252,6 +257,10 @@ public class Serialize
                 else if (type == 5)
                 {
                     editor.SwitchQubit("QBottleNeck");
+                }
+                else if (type == 6)
+                {
+                    editor.SwitchQubit("QCube");
                 }
 
                 editor.PlaceQubitByIndex(pos);
