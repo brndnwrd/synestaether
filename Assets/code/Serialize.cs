@@ -28,7 +28,6 @@ public class Serialize
         {
             Transform body = Qubits_Transform[i].GetComponentsInChildren<Transform>()[1];
             string name = body.name;
-            Debug.Log(name);
             if (name == "QEmitter")
             {
                 Block_Type[j] = 0;
