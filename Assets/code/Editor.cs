@@ -31,6 +31,7 @@ public class Editor : MonoBehaviour
     public GameObject QTurnPrefab;
     public GameObject QSlantPrefab;
     public GameObject QFunnelPrefab;
+    public GameObject QCubePrefab;
     [HideInInspector] public GameObject GhostBlock;
     public Material GhostBlockMaterial;
     
@@ -194,6 +195,9 @@ public class Editor : MonoBehaviour
                 break;
             case "QFunnel":
                 placingQubit = QFunnelPrefab;
+                break;
+            case "QCube":
+                placingQubit = QCubePrefab;
                 break;
         }
 

@@ -275,6 +275,8 @@ MonoBehaviour:
     type: 3}
   QFunnelPrefab: {fileID: 5878397623920972871, guid: 73ed3cd973da74abfbe2cfa14819383c,
     type: 3}
+  QCubePrefab: {fileID: 6715126059264984019, guid: fa4034b090b9e4462a8ccef51fbd0dc7,
+    type: 3}
   GhostBlock: {fileID: 0}
   GhostBlockMaterial: {fileID: 2100000, guid: 4e5fe1f399ccb4b3e906f5c3dc4e46f4, type: 2}
   level: {fileID: 0}
@@ -2720,7 +2722,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-4272
+  m_Name: pb_Mesh-10558
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
