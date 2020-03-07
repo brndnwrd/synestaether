@@ -13,7 +13,6 @@ public class ForceField : MonoBehaviour
         var rb = other.gameObject.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            Debug.Log("collision " + other);
             rb.AddForce(forceAmount * transform.forward);
         }
     }

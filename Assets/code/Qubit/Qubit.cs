@@ -59,6 +59,24 @@ public class Qubit : MonoBehaviour
         }
     }
 
+    public void SetRotation(float angle, bool isDeserialize = false)
+    {
+        
+        for (int i = 0; i < this.transform.childCount; i++)
+        {
+            Transform thisChild = this.transform.GetChild(i);
+            if (thisChild.gameObject.tag != "no-rotate")
+            {
+                thisChild.transform.rotation = Quaternion.Euler(new Vector3(0, angle, 0));
+            }
+        }
+
+        //if (!isDeserialize)
+        //{
+        //    _editor.UpdateTransformHandle();
+        //}
+    }
+
     public void Translate(directions direction)
     {
         Transform par = GameObject.Find("QBlocks").GetComponent<Transform>();

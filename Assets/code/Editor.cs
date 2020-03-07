@@ -36,6 +36,7 @@ public class Editor : MonoBehaviour
     public GameObject QTurnPrefab;
     public GameObject QSlantPrefab;
     public GameObject QFunnelPrefab;
+    public GameObject QCubePrefab;
 
     public GameObject QBottleNeckPrefab;
 
@@ -51,7 +52,7 @@ public class Editor : MonoBehaviour
     {
         // you can add names here, but make sure they work in 
         // Switch Qubit and Serilaize...
-        unplaceables = new List<String> {"QCube", "QEmitter", "QFunnel"};
+        unplaceables = new List<String> {"QCube", "QEmitter", "QFunnel", "QBucket", "QBottleNeck"};
         size = 15;
         _grid = new GameObject[size, size, size];
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -150,7 +151,7 @@ public class Editor : MonoBehaviour
         newbie.transform.position = newPos;
         if (GhostBlock != null)
         {
-            newbie.transform.rotation = GhostBlock.transform.rotation;
+            newQ.SetRotation(currentRotation);
         }
 
         _grid[(int) newIndex.x, (int) newIndex.y, (int) newIndex.z] = newbie;
@@ -217,7 +218,7 @@ public class Editor : MonoBehaviour
 
     public void SetState(editState newState)
     {
-//        Debug.Log("state now equal to " + newState);
+        //Debug.Log("state now equal to " + newState);
         var oldState = _state;
 
         Ray rayToFace = _camera.ScreenPointToRay(Input.mousePosition);
@@ -292,12 +293,11 @@ public class Editor : MonoBehaviour
 
     /*
      *  This function allows users to rotate
-     *  before lacing a block
+     *  before placing a block
      *  and to rotate a selected block
      *  with keys.
      *  Makes block rotation persistent 
      *  Makes block rotation persistent
-
      *  between placements
      */
     public void RotateKeys(bool CW) // or left
@@ -326,7 +326,8 @@ public class Editor : MonoBehaviour
             return;
         }
 
-        toRotate.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
+        Debug.Log(currentRotation);
+        toRotate.GetComponent<Qubit>().SetRotation(currentRotation);
     }
 
     public void UpdateTransformHandle()
@@ -447,35 +448,41 @@ public class Editor : MonoBehaviour
         //Edit Mode keyboard controls
         if (_state == editState.Edit && _selected)
         {
-            
             if (Input.GetKeyDown(KeyCode.X))
             {
+                int resourceType;
                 string name = _selected.name;
-                if (name == "QRails-v4(Clone)")
+                if (level != null)
                 {
-                    level.SetResource(0, 1);
-                    GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(level.GetResource(0));
+                    if (name == "QRails-v4(Clone)")
+                    {
+                        resourceType = 0;
+                        GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(level.GetResource(0));
+                    }
+                    else if (name == "QTurn-v3(Clone)")
+                    {
+                        resourceType = 1;
+                        GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
+                    }
+                    else if (name == "QSlant-v4(Clone)")
+                    {
+                        resourceType = 2;
+                        GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
+                    }
+                    else
+                    {
+                        //its unplaceable so no resource thing
+                        return;
+                    }
+
+                    level.SetResource(resourceType, 1);
                 }
-                else if (name == "QTurn-v3(Clone)")
-                {
-                    level.SetResource(1, 1);
-                    GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
-                }
-                else if (name == "QSlant-v4(Clone)")
-                {
-                    level.SetResource(2, 1);
-                    GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
-                }
-                else
-                {
-                    //its unplaceable so no resource thing
-                    return;
-                }
+
 
                 DestroyImmediate(_selected);
                 SetState(editState.Rest);
             }
-            
+
             /* This is now mouse stuff
             else if (Input.GetKeyDown(KeyCode.J))
             {
@@ -545,8 +552,6 @@ public class Editor : MonoBehaviour
                 _selected.GetComponent<Qubit>().Translate(directions.Down);
             }
             */
-
         }
     }
 }
-
