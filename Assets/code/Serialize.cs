@@ -53,9 +53,11 @@ public class Serialize
                 Block_Type[i] = 4;
                 Rotation[i] = body.rotation.eulerAngles.y;
             }
+
+
             else if (name == "QCube")
             {
-                Block_Type[i] = 5;
+                Block_Type[i] = 6;
                 Rotation[i] = body.rotation.eulerAngles.y;
             }
 
@@ -252,6 +254,14 @@ public class Serialize
                 else if (type == 4)
                 {
                     editor.SwitchQubit("QFunnel");
+                }
+                else if (type == 5)
+                {
+                    editor.SwitchQubit("QBottleNeck");
+                }
+                else if (type == 6)
+                {
+                    editor.SwitchQubit("QCube");
                 }
 
                 editor.PlaceQubitByIndex(pos);

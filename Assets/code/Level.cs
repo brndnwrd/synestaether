@@ -29,11 +29,12 @@ public class Level : MonoBehaviour
         Serialize serialize = new Serialize();
         //Resource = serialize.Load_Level(num, LevelBlock);
         Resource = serialize.LoadLevel(num, LevelBlock, LevelBlockFade);
-        hotkeys = new string[4];
+        hotkeys = new string[5];
         //GameObject.Find("Editor").GetComponent<Editor>().UpdateLevel(this);
         hotkeys[GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeLocation(Resource, 0)] = "QRails";
         hotkeys[GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeLocation(Resource, 1)] = "QTurns";
         hotkeys[GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeLocation(Resource, 2)] = "QSlants";
+        hotkeys[GameObject.Find("Button_BottleNeck").GetComponent<CreateButton>().ChangeLocation(Resource, 3)] = "QBottleNeck";
         KillMarbles();
     }
 

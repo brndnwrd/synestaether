@@ -41,6 +41,10 @@ public class CreateButton : Button
         {
             editor.SwitchQubit("QSlants");
         }
+        else if (this.name == "Button_BottleNeck")
+        {
+            editor.SwitchQubit("QBottleNeck");
+        }
         else if (this.name == "Serialize")
         {
             ResourceMenu res_menu= GameObject.Find("ResourceMenu").GetComponent<ResourceMenu>();
@@ -85,7 +89,9 @@ public class CreateButton : Button
         {
             index = j + 1;
         }
-        int res = resource[j];
+        int res = 0;
+        if(j < resource.Length)
+            res = resource[j];
         if(res == 0)
         {
             group.alpha = 0;

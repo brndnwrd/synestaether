@@ -36,7 +36,9 @@ public class Editor : MonoBehaviour
     public GameObject QTurnPrefab;
     public GameObject QSlantPrefab;
     public GameObject QFunnelPrefab;
-    public GameObject QCubePrefab;
+
+    public GameObject QBottleNeckPrefab;
+
     [HideInInspector] public GameObject GhostBlock;
     public Material GhostBlockMaterial;
     private float currentRotation = 0f; //store the angles
@@ -128,6 +130,16 @@ public class Editor : MonoBehaviour
                     GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
                 }
             }
+            else if (placingQubit.name == "QBottleneck")
+            {
+                if (level.GetResource(3) == 0)
+                    return;
+                else
+                {
+                    level.SetResource(3, -1);
+                    GameObject.Find("Button_BottleNeck").GetComponent<CreateButton>().ChangeText(level.GetResource(3));
+                }
+            }
         }
 
         Vector3 newPos = indexToPosition(newIndex);
@@ -174,6 +186,9 @@ public class Editor : MonoBehaviour
                 break;
             case "QEmitter":
                 placingQubit = QEmiterPrefab;
+                break;
+            case "QBottleNeck":
+                placingQubit = QBottleNeckPrefab;
                 break;
             case "QFunnel":
                 placingQubit = QFunnelPrefab;
@@ -281,6 +296,8 @@ public class Editor : MonoBehaviour
      *  and to rotate a selected block
      *  with keys.
      *  Makes block rotation persistent 
+     *  Makes block rotation persistent
+
      *  between placements
      */
     public void RotateKeys(bool CW) // or left
@@ -459,6 +476,40 @@ public class Editor : MonoBehaviour
                 SetState(editState.Rest);
             }
             
+            /* This is now mouse stuff
+            else if (Input.GetKeyDown(KeyCode.J))
+            {
+
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                if (level != null)
+                {
+                    string name = _selected.name;
+                    if (name == "QRails-v4(Clone)")
+                    {
+                        level.SetResource(0, 1);
+                        GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(level.GetResource(0));
+                    }
+                    else if (name == "QTurn-v3(Clone)")
+                    {
+                        level.SetResource(1, 1);
+                        GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
+                    }
+                    else if (name == "QSlant-v4(Clone)")
+                    {
+                        level.SetResource(2, 1);
+                        GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
+                    }
+                    else if (name == "QBottleneck(Clone)")
+                    {
+                        level.SetResource(3, 1);
+                        GameObject.Find("Button_BottleNeck").GetComponent<CreateButton>().ChangeText(level.GetResource(3));
+                    }
+                }
+                DestroyImmediate(_selected);
+                SetState(editState.Rest);
+            }
+
             /* This is now mouse stuff
             else if (Input.GetKeyDown(KeyCode.J))
             {
