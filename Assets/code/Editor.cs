@@ -36,8 +36,9 @@ public class Editor : MonoBehaviour
     public GameObject QTurnPrefab;
     public GameObject QSlantPrefab;
     public GameObject QFunnelPrefab;
+
     public GameObject QBottleNeckPrefab;
-    public GameObject QCubePrefab;
+
     [HideInInspector] public GameObject GhostBlock;
     public Material GhostBlockMaterial;
     private float currentRotation = 0f; //store the angles
@@ -140,6 +141,7 @@ public class Editor : MonoBehaviour
                 }
             }
         }
+
         Vector3 newPos = indexToPosition(newIndex);
         Transform par = GameObject.Find("QBlocks").GetComponent<Transform>();
         var newbie = Instantiate(placingQubit, par);
@@ -293,7 +295,9 @@ public class Editor : MonoBehaviour
      *  before lacing a block
      *  and to rotate a selected block
      *  with keys.
+     *  Makes block rotation persistent 
      *  Makes block rotation persistent
+
      *  between placements
      */
     public void RotateKeys(bool CW) // or left
@@ -434,58 +438,6 @@ public class Editor : MonoBehaviour
                     SetState(editState.Create);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            //placingQubit = QEmiterPrefab;
-            //placingQubit = QSlantPrefab;
-            if (level != null)
-            {
-                string name = level.GetHotkey(4);
-                if (name != null)
-                {
-                    SwitchQubit(name);
-                    if (_state != editState.Create)
-                        SetState(editState.Create);
-                }
-                else
-                    return;
-            }
-            else
-            {
-                SwitchQubit("QBottleNeck");
-                if (_state != editState.Create)
-                    SetState(editState.Create);
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            if (level == null)
-            {
-                //placingQubit = QFunnelPrefab;
-                if (_state != editState.Create)
-                    SetState(editState.Create);
-                SwitchQubit("QCube");
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            if (level == null)
-            {
-                //placingQubit = QFunnelPrefab;
-                if (_state != editState.Create)
-                    SetState(editState.Create);
-                SwitchQubit("QFunnel");
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            if (level == null)
-            {
-                if (_state != editState.Create)
-                    SetState(editState.Create);
-                SwitchQubit("QEmitter");
-            }
-        }
         else if (Input.GetKeyDown(KeyCode.RightBracket))
         {
             unplaceableIndex = (unplaceableIndex + 1) % unplaceables.Count;
@@ -495,6 +447,38 @@ public class Editor : MonoBehaviour
         //Edit Mode keyboard controls
         if (_state == editState.Edit && _selected)
         {
+            
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                string name = _selected.name;
+                if (name == "QRails-v4(Clone)")
+                {
+                    level.SetResource(0, 1);
+                    GameObject.Find("Button_Rail").GetComponent<CreateButton>().ChangeText(level.GetResource(0));
+                }
+                else if (name == "QTurn-v3(Clone)")
+                {
+                    level.SetResource(1, 1);
+                    GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
+                }
+                else if (name == "QSlant-v4(Clone)")
+                {
+                    level.SetResource(2, 1);
+                    GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
+                }
+                else
+                {
+                    //its unplaceable so no resource thing
+                    return;
+                }
+
+                DestroyImmediate(_selected);
+                SetState(editState.Rest);
+            }
+            
+            /* This is now mouse stuff
+            else if (Input.GetKeyDown(KeyCode.J))
+            {
 
             if (Input.GetKeyDown(KeyCode.X))
             {
