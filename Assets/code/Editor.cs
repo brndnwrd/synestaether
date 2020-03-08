@@ -448,6 +448,9 @@ public class Editor : MonoBehaviour
         //Edit Mode keyboard controls
         if (_state == editState.Edit && _selected)
         {
+            //setResource first, then ChangeText.
+
+            /*
             if (Input.GetKeyDown(KeyCode.X))
             {
                 int resourceType;
@@ -482,10 +485,7 @@ public class Editor : MonoBehaviour
                 DestroyImmediate(_selected);
                 SetState(editState.Rest);
             }
-
-            /* This is now mouse stuff
-            else if (Input.GetKeyDown(KeyCode.J))
-            {
+            */
 
             if (Input.GetKeyDown(KeyCode.X))
             {
