@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class ForceField : MonoBehaviour
 {
-    public float forceAmount = 1.0f;
+    [HideInInspector]
+    public float forceAmount = 0f;
 
 
     private void OnTriggerStay(Collider other)
