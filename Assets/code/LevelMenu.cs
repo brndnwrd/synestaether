@@ -7,9 +7,16 @@ using UnityEngine.UI;
 public class LevelMenu : MonoBehaviour
 {
     public GameObject level_button_prefab;
+    public Sprite image1;
+    public Sprite image2;
+    public Sprite image3;
+    public Sprite image4;
+    public Sprite image5;
+    public Sprite image6;
     [HideInInspector]
     CanvasGroup menu;
     int State;
+    Sprite[] images;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +24,7 @@ public class LevelMenu : MonoBehaviour
         back.onClick.AddListener(CloseMenu);
         menu = this.GetComponent<CanvasGroup>();
         State = 0;
+        images = new Sprite[] {image1, image2, image3, image4, image5 ,image6};
     }
 
     public void CloseMenu()
@@ -47,6 +55,9 @@ public class LevelMenu : MonoBehaviour
             TextMeshProUGUI buttonText = levelButtonButton.GetComponentInChildren<TextMeshProUGUI>();
             buttonText.text = (i + 1).ToString();
             levelButtonTransform.Translate(new Vector3(-80+40*(i%5), 130-15*(int)(i/5)));
+            Image buttonImage = levelButton.GetComponent<Image>();
+            int type = new System.Random(System.Guid.NewGuid().GetHashCode()).Next(0, 5);
+            buttonImage.sprite = images[type];
         }
         menu.alpha = 1;
         menu.interactable = true;

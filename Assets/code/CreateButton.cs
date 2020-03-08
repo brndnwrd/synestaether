@@ -70,6 +70,8 @@ public class CreateButton : Button
             editor.SetState(editState.Rest);
             Level currentLevel = GameObject.Find("Level").GetComponent<Level>();
             int index = currentLevel.GetIndex();
+            if (index == 0)
+                return;
             currentLevel.Initialize(index);
         }
     }
