@@ -36,9 +36,6 @@ public class RotationRing : MonoBehaviour
         // atleast for debug I'm using colors green/red
         // _renderer.enabled = false; will make it disappear
         // ideally we get a wireframe shader material thing, there are free ones around
-        baseColor = new Color(0.2f, 0.7f, 1.0f, 0.7f);
-        hoverColor = new Color(0.3f, 0.8f, 1.0f, 0.9f);
-        _renderer.material.color = baseColor;
     }
 
     public void SetRotationDestination(float newAngle)
@@ -87,14 +84,18 @@ public class RotationRing : MonoBehaviour
 
     private void OnMouseOver()
     {
-        GetComponent<Renderer>().material.color = hoverColor;
+        var newCol = GetComponent<Renderer>().material.color;
+        newCol.a = 1.0f;
+        GetComponent<Renderer>().material.color = newCol;
     }
 
     private void OnMouseExit()
     {
         if (!_isDrag)
         {
-            GetComponent<Renderer>().material.color = baseColor;
+            var newCol = GetComponent<Renderer>().material.color;
+            newCol.a = 0.6f;
+            GetComponent<Renderer>().material.color = newCol;
         }
     }
 
@@ -107,6 +108,8 @@ public class RotationRing : MonoBehaviour
     private void OnMouseUp()
     {
         _isDrag = false;
-        GetComponent<Renderer>().material.color = baseColor;
+        var newCol = GetComponent<Renderer>().material.color;
+        newCol.a = 0.6f;
+        GetComponent<Renderer>().material.color = newCol;
     }
 }
