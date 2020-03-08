@@ -23,13 +23,16 @@ public class Qubit : MonoBehaviour
     //public Vector2 orientation; //we don't need this, can just use unity transform
     public Vector3 index;
     public List<availableFace> availableFaces;
-
     public Editor _editor;
+    
+    [HideInInspector]
+    public float originalYRotation;
 
     // a general startup method for Qubits
     // You must add this MANUALLY to your startup method
     public void Initialize()
     {
+        originalYRotation = 0f;
         availableFaces = GetComponents<availableFace>().ToList();
         _editor = GameObject.Find("Editor").GetComponent<Editor>();
     }
@@ -67,7 +70,9 @@ public class Qubit : MonoBehaviour
             Transform thisChild = this.transform.GetChild(i);
             if (thisChild.gameObject.tag != "no-rotate")
             {
-                thisChild.transform.rotation = Quaternion.Euler(new Vector3(0, angle, 0));
+                thisChild.transform.rotation = 
+                    Quaternion.Euler(new Vector3(0, angle + originalYRotation, 0));
+                    // originalYRotation lets us save rotation in prefab
             }
         }
 

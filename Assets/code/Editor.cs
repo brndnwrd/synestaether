@@ -269,6 +269,7 @@ public class Editor : MonoBehaviour
             Destroy(GhostBlock);
             GhostBlock = MakeGhostBlock(placingQubit);
             GhostBlock.transform.position = oldPos;
+            GhostBlock.GetComponent<Qubit>().SetRotation(currentRotation);
             //GhostBlock.transform.position = GhostBlockInitPosition;
         }
     }
@@ -287,7 +288,8 @@ public class Editor : MonoBehaviour
         newGhost.GetComponentInChildren<MeshRenderer>().material = new Material(GhostBlockMaterial);
         //MeshRenderer[] renderer = newGhost.GetComponentsInChildren<MeshRenderer>();
         //renderer.material.color = Color.blue;//new Color(0.0f, 0.0f, 1.0f, 0.2f);
-        newGhost.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
+        //newGhost.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
+        newGhost.GetComponent<Qubit>().SetRotation(currentRotation);
         return newGhost;
     }
 
@@ -326,7 +328,6 @@ public class Editor : MonoBehaviour
             return;
         }
 
-        Debug.Log(currentRotation);
         toRotate.GetComponent<Qubit>().SetRotation(currentRotation);
     }
 
