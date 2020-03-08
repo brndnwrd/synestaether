@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,7 @@ public class LevelButton : MonoBehaviour
         _levelMenu = GetComponentInParent<LevelMenu>();
         level = this.GetComponent<Button>();
         level.onClick.AddListener(selectLevel);
-        index = System.Convert.ToInt32(this.GetComponentInChildren<Text>().text);
+        index = System.Convert.ToInt32(this.GetComponentInChildren<TextMeshProUGUI>().text);
         QLevel = GameObject.Find("Level").GetComponent<Level>();
     }
 

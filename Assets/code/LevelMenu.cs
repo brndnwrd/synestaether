@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,8 +44,8 @@ public class LevelMenu : MonoBehaviour
             GameObject levelButton = GameObject.Instantiate(level_button_prefab, Parent);
             Transform levelButtonTransform = levelButton.transform;
             Button levelButtonButton = levelButton.GetComponent<Button>();
-            Text text = levelButtonButton.GetComponentInChildren<Text>();
-            text.text = (i + 1).ToString();
+            TextMeshProUGUI buttonText = levelButtonButton.GetComponentInChildren<TextMeshProUGUI>();
+            buttonText.text = (i + 1).ToString();
             levelButtonTransform.Translate(new Vector3(-80+40*(i%5), 130-15*(int)(i/5)));
         }
         menu.alpha = 1;

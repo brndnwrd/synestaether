@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CreateButton : Button
 {
     Editor editor;
-    Text text;
+    TextMeshProUGUI buttonText;
     LevelMenu menu;
     CanvasGroup group;
     int index;
@@ -14,7 +15,7 @@ public class CreateButton : Button
     {
         onClick.AddListener(ButtonOnClickEvent);
         editor = GameObject.Find("Editor").GetComponent<Editor>();
-        text = GetComponentInChildren<Text>();
+        buttonText = GetComponentInChildren<TextMeshProUGUI>();
         menu = GameObject.Find("LevelMenu").GetComponent<LevelMenu>();
         group = this.GetComponent<CanvasGroup>();
     }
@@ -80,7 +81,7 @@ public class CreateButton : Button
 
     public void ChangeText(int num)
     {
-        text.text = "x " + num.ToString();
+        buttonText.text = "x " + num.ToString();
     }
 
     public int ChangeLocation(int[] resource, int j)
