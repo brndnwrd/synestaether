@@ -23,6 +23,7 @@ public class Qubit : MonoBehaviour
     //public Vector2 orientation; //we don't need this, can just use unity transform
     public Vector3 index;
     public List<availableFace> availableFaces;
+    [HideInInspector]
     public Editor _editor;
     
     [HideInInspector]
