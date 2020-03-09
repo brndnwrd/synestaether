@@ -160,6 +160,7 @@ MonoBehaviour:
   index: {x: 0, y: 0, z: 0}
   availableFaces: []
   _editor: {fileID: 0}
+  originalYRotation: 0
 --- !u!1001 &4709852751246848403
 PrefabInstance:
   m_ObjectHideFlags: 0
