@@ -206,13 +206,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 50024352}
-  m_LocalRotation: {x: 0.66337425, y: 0.3614183, z: 0.4686871, w: 0.45786884}
+  m_LocalRotation: {x: 0.55857074, y: 0.443483, z: 0.5915159, w: 0.37607244}
   m_LocalPosition: {x: 25.1, y: -30.4, z: 2.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1902532219}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 164.414, y: -81.56, z: -70.630005}
+  m_LocalEulerAnglesHint: {x: 186, y: -89, z: -71}
 --- !u!1 &140375297
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,7 +534,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.00012207031, y: -470}
+  m_AnchoredPosition: {x: 0, y: -478.3}
   m_SizeDelta: {x: 171.9999, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &245762125
@@ -2421,7 +2421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Reset
+  m_text: reset
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 54faa214818f9604190c661bf6e7794e, type: 2}
   m_sharedMaterial: {fileID: -8838658729585143294, guid: 54faa214818f9604190c661bf6e7794e,
@@ -2450,15 +2450,15 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 3
   m_textAlignment: 4128
-  m_characterSpacing: 0
+  m_characterSpacing: 5
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -3257,8 +3257,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 983463086}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 2, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 2.22729, y: 1.39614, z: 1}
   m_Children:
   - {fileID: 544938453}
   m_Father: {fileID: 1480554489}
@@ -3266,7 +3266,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.00012207031, y: -390}
+  m_AnchoredPosition: {x: 0, y: -413.8}
   m_SizeDelta: {x: 171.9999, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &983463088
@@ -3753,7 +3753,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Levels
+  m_text: levels
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 54faa214818f9604190c661bf6e7794e, type: 2}
   m_sharedMaterial: {fileID: -8838658729585143294, guid: 54faa214818f9604190c661bf6e7794e,
@@ -3782,15 +3782,15 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 3
   m_textAlignment: 4128
-  m_characterSpacing: 0
+  m_characterSpacing: 5
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
