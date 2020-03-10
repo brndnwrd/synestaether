@@ -53,8 +53,11 @@ public class Serialize
                 Block_Type[i] = 4;
                 Rotation[i] = body.rotation.eulerAngles.y;
             }
-
-
+            else if (name == "QBottleneck")
+            {
+                Block_Type[i] = 5;
+                Rotation[i] = body.rotation.eulerAngles.y - 90;
+            }
             else if (name == "QCube")
             {
                 Block_Type[i] = 6;
