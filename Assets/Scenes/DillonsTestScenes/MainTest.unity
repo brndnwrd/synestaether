@@ -271,7 +271,7 @@ MonoBehaviour:
     type: 3}
   QTurnPrefab: {fileID: 1993529849540996714, guid: e5f36ec48455c45f091dcb7d62985a7a,
     type: 3}
-  QSlantPrefab: {fileID: 5503561628432252578, guid: da360f41ca6cd442bb578d1e0c52fa79,
+  QSlantPrefab: {fileID: 3125431325400791510, guid: d033de0ab0a5f4adcbf6cf646a04b41c,
     type: 3}
   QFunnelPrefab: {fileID: 6363982194482606214, guid: dbf79aae5b483448ab00701f05a5f1a6,
     type: 3}
