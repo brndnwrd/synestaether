@@ -58,7 +58,10 @@ public class CreateButton : Button
             {
                 if (CompareTag("main-menu"))
                 {
-                    GameObject.Find("MainMenu").GetComponent<CanvasGroup>().alpha = 0;
+                    var mainMenu = GameObject.Find("MainMenu").GetComponent<CanvasGroup>();
+                    mainMenu.alpha = 0;
+                    mainMenu.interactable = false;
+                    mainMenu.blocksRaycasts = false;
                 }
                 menu.OpenMenu();
                 SwitchState();
@@ -67,7 +70,10 @@ public class CreateButton : Button
             {
                 if (CompareTag("main-menu"))
                 {
-                    GameObject.Find("MainMenu").GetComponent<CanvasGroup>().alpha = 1;
+                    var mainMenu = GameObject.Find("MainMenu").GetComponent<CanvasGroup>();
+                    mainMenu.alpha = 1;
+                    mainMenu.interactable = true;
+                    mainMenu.blocksRaycasts = true;
                 }
                 menu.CloseMenu();
                 SwitchState();

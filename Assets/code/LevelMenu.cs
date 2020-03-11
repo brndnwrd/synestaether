@@ -39,7 +39,10 @@ public class LevelMenu : MonoBehaviour
         }
         if (GameObject.Find("MainMenu").CompareTag("main-menu"))
         {
-            GameObject.Find("MainMenu").GetComponent<CanvasGroup>().alpha = 1;
+            var mainMenu = GameObject.Find("MainMenu").GetComponent<CanvasGroup>();
+            mainMenu.alpha = 1;
+            mainMenu.blocksRaycasts = true;
+            mainMenu.interactable = true;
         }
         menu.alpha = 0;
         menu.interactable = false;

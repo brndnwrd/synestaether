@@ -24,6 +24,10 @@ public class LevelButton : MonoBehaviour
     {
         if (GameObject.Find("MainMenu").CompareTag("main-menu"))
         {
+            var mainMenu = GameObject.Find("MainMenu").GetComponent<CanvasGroup>();
+            mainMenu.alpha = 0;
+            mainMenu.blocksRaycasts = false;
+            mainMenu.interactable = false;
             GameObject.Find("MainMenu").tag = "Untagged";
             GameObject.Find("Panel").GetComponent<CanvasGroup>().alpha = 1;
         }

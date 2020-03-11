@@ -12,6 +12,7 @@ public class Level : MonoBehaviour
     private bool currLevelFinished = false;
     private float camOldSize;
     private string[] hotkeys;
+    private Editor _editor;
 
     public float closeZoom = 56f;
     public float camZoomTime = 5f;
@@ -21,6 +22,7 @@ public class Level : MonoBehaviour
     void Start()
     {
         UpdateObjective();
+        _editor = GameObject.Find("Editor").GetComponent<Editor>();
     }
     
     public void Initialize(int num)
@@ -36,6 +38,7 @@ public class Level : MonoBehaviour
         hotkeys[GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeLocation(Resource, 2)] = "QSlants";
         hotkeys[GameObject.Find("Button_BottleNeck").GetComponent<CreateButton>().ChangeLocation(Resource, 3)] = "QBottleNeck";
         KillMarbles();
+        //GameObject.Find("Editor").GetComponent<Editor>().SwitchQubit();
     }
 
     public void OnFinishLoading()
@@ -43,6 +46,16 @@ public class Level : MonoBehaviour
         // called AFTER the level is totally finished loading
         UpdateObjective();
         KillMarbles();
+        string[] qubits = { "QRails", "QTurns", "QSlants", "QBottleNeck"};
+        for (var i = 0; i < Resource.Length; i++)
+        {
+            if (Resource[i] != 0)
+            {
+                Debug.Log(qubits[i]);
+                _editor.SwitchQubit(qubits[i]);
+                break;
+            }
+        }
     }
 
     // Update is called once per frame
