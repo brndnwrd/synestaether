@@ -330,8 +330,9 @@ MonoBehaviour:
   index: {x: 0, y: 0, z: 0}
   availableFaces: []
   _editor: {fileID: 0}
+  originalYRotation: 0
   allowedSaveUp: 0.2
-  necessaryMarbleScore: 10
+  necessaryMarbleScore: 5
   decayPerSecond: 0.3
   animationSpeed: 0.1
   doneMaterial: {fileID: 2100000, guid: 2266e561230aa4e0c81386b7be81f336, type: 2}
