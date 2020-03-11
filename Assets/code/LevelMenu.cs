@@ -37,6 +37,10 @@ public class LevelMenu : MonoBehaviour
                 GameObject.Destroy(buttons[i].gameObject);
             }
         }
+        if (GameObject.Find("MainMenu").CompareTag("main-menu"))
+        {
+            GameObject.Find("MainMenu").GetComponent<CanvasGroup>().alpha = 1;
+        }
         menu.alpha = 0;
         menu.interactable = false;
         menu.blocksRaycasts = false;

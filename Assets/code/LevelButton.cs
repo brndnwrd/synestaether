@@ -22,6 +22,11 @@ public class LevelButton : MonoBehaviour
 
     void selectLevel()
     {
+        if (GameObject.Find("MainMenu").CompareTag("main-menu"))
+        {
+            GameObject.Find("MainMenu").tag = "Untagged";
+            GameObject.Find("Panel").GetComponent<CanvasGroup>().alpha = 1;
+        }
         QLevel.Initialize(index);
         _levelMenu.CloseMenu();
     }

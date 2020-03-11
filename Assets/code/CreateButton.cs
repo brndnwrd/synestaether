@@ -56,11 +56,19 @@ public class CreateButton : Button
         {
             if (menu.getState() == 0)
             {
+                if (CompareTag("main-menu"))
+                {
+                    GameObject.Find("MainMenu").GetComponent<CanvasGroup>().alpha = 0;
+                }
                 menu.OpenMenu();
                 SwitchState();
             }
             else
             {
+                if (CompareTag("main-menu"))
+                {
+                    GameObject.Find("MainMenu").GetComponent<CanvasGroup>().alpha = 1;
+                }
                 menu.CloseMenu();
                 SwitchState();
             }

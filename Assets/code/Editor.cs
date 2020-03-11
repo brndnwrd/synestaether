@@ -26,7 +26,7 @@ public class Editor : MonoBehaviour
     public GameObject[,,] _grid;
     private Camera _camera;
     [HideInInspector] public int size; // number of rows/columns
-    [HideInInspector] public GameObject placingQubit; // the Qubit from the menu were about to place
+    public GameObject placingQubit; // the Qubit from the menu were about to place
     public GameObject transformPrefab;
     private GameObject transformInstance;
 
