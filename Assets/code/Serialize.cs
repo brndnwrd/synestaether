@@ -159,15 +159,11 @@ public class Serialize
 
     public int[] LoadLevel(int num, Material LevelBlock, Material LevelBlockFade)
     {
-        if (!File.Exists(Application.dataPath + "/levels/" + num.ToString()))
-        {
-            Debug.LogError("No Such Level File: " + num);
-        }
-
+        TextAsset t = Resources.Load<TextAsset>(num.ToString());
+        MemoryStream stream = new MemoryStream(t.bytes);
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open(Application.dataPath + "/levels/" + num.ToString(), FileMode.Open);
-        Serialize loadData = (Serialize) bf.Deserialize(file);
-        file.Close();
+        Serialize loadData = (Serialize) bf.Deserialize(stream);
+        stream.Close();
         Level _level = GameObject.FindObjectOfType<Level>();
         
         //you need a monobehavior to do this so why not the level obj

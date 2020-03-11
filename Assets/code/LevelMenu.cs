@@ -52,7 +52,7 @@ public class LevelMenu : MonoBehaviour
 
     public void OpenMenu()
     {
-        string[] dirs = System.IO.Directory.GetFileSystemEntries(Application.dataPath + "/levels/");
+        TextAsset[] dirs = Resources.LoadAll<TextAsset>("");
         int level_num = (int)System.Math.Ceiling((double)dirs.Length / 2);
         Transform Parent = menu.transform;
         for (int i = 0; i < level_num; i++) { 
