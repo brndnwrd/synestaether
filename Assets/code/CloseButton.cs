@@ -19,7 +19,6 @@ public class CloseButton : Button
 
     void OnMouseDown()
     {
-        Debug.Log("ping");
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 

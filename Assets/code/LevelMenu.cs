@@ -32,7 +32,7 @@ public class LevelMenu : MonoBehaviour
         Button[] buttons = this.GetComponentsInChildren<Button>();
         if(buttons.Length > 1)
         {
-            for(int i = 1; i < buttons.Length; i++)
+            for(int i = 2; i < buttons.Length; i++)
             {
                 GameObject.Destroy(buttons[i].gameObject);
             }
@@ -64,7 +64,7 @@ public class LevelMenu : MonoBehaviour
             levelButtonTransform.Translate(new Vector3(-80+40*(i%5), 130-15*(int)(i/5)));
             Image buttonImage = levelButton.GetComponent<Image>();
             int type = new System.Random(System.Guid.NewGuid().GetHashCode()).Next(0, 5);
-            buttonImage.sprite = images[type];
+            buttonImage.sprite = images[0];
         }
         menu.alpha = 1;
         menu.interactable = true;
