@@ -121,7 +121,7 @@ public class Editor : MonoBehaviour
                     GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
                 }
             }
-            else if (placingQubit.name == "QSlant-v4")
+            else if (placingQubit.name == "QSlant-v5")
             {
                 if (level.GetResource(2) == 0)
                     return;
@@ -504,7 +504,7 @@ public class Editor : MonoBehaviour
                         level.SetResource(1, 1);
                         GameObject.Find("Button_Turn").GetComponent<CreateButton>().ChangeText(level.GetResource(1));
                     }
-                    else if (name == "QSlant-v4(Clone)")
+                    else if (name == "QSlant-v5(Clone)")
                     {
                         level.SetResource(2, 1);
                         GameObject.Find("Button_Slant").GetComponent<CreateButton>().ChangeText(level.GetResource(2));
