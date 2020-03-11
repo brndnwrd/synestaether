@@ -190,34 +190,37 @@ public class Serialize
             mr.material = LevelBlockFade;
         }
         var timeSinceStart = 0f;
-        while (true)
+        if (QBlocksObj.transform.childCount > 0)
         {
-            timeSinceStart += Time.deltaTime;
-            var alpha = Mathf.Lerp(1f, 0f, 2 * timeSinceStart / transitionTime);
-            foreach (var mr in oldQubitsMR)
+            while (true)
             {
-                Color oldCol = mr.material.color;
-                var newCol = new Color(oldCol.r, oldCol.g, oldCol.b, alpha);
-                mr.material.color = newCol;
-            }
-
-            if (timeSinceStart > transitionTime / 2)
-            {
-                foreach (Transform qubit in oldQubitsTransform)
+                timeSinceStart += Time.deltaTime;
+                var alpha = Mathf.Lerp(1f, 0f, 2 * timeSinceStart / transitionTime);
+                foreach (var mr in oldQubitsMR)
                 {
-                    if (qubit != null && qubit.name != "QBlocks")
-                    {
-                        // this MUST be DestroyImmediate
-                        Object.DestroyImmediate(qubit.gameObject);
-                    }
+                    Color oldCol = mr.material.color;
+                    var newCol = new Color(oldCol.r, oldCol.g, oldCol.b, alpha);
+                    mr.material.color = newCol;
                 }
 
-                break;
-            }
+                if (timeSinceStart > transitionTime / 2)
+                {
+                    foreach (Transform qubit in oldQubitsTransform)
+                    {
+                        if (qubit != null && qubit.name != "QBlocks")
+                        {
+                            // this MUST be DestroyImmediate
+                            Object.DestroyImmediate(qubit.gameObject);
+                        }
+                    }
 
-            yield return new WaitForEndOfFrame();   
+                    break;
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
         }
-        
+
         yield return new WaitForSeconds(0.2f);
         
         GameObject TransTool = GameObject.Find("TransformTool_unbaked_(Clone)");
