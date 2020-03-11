@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: SourceSansPro-Regular SDF Material
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: UNDERLAY_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -41,15 +41,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Ambient: 0.5
-    - _Bevel: 0.5
+    - _Bevel: 0.127
     - _BevelClamp: 0
     - _BevelOffset: 0
     - _BevelRoundness: 0
-    - _BevelWidth: 0
+    - _BevelWidth: -0.434
     - _BumpFace: 0
     - _BumpOutline: 0
     - _ColorMask: 15
-    - _Diffuse: 0.5
+    - _Diffuse: 0
     - _FaceDilate: 0
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
@@ -74,7 +74,7 @@ Material:
     - _ScaleY: 1
     - _ShaderFlags: 0
     - _Sharpness: 0
-    - _SpecularPower: 2
+    - _SpecularPower: 3.11
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0

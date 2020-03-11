@@ -174,7 +174,6 @@ public class Editor : MonoBehaviour
 
     public void SwitchQubit(String name)
     {
-        Debug.Log(name);
         switch (name)
         {
             case "QRails":
