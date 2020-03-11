@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using TreeEditor;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -75,13 +74,13 @@ public class Serialize
         int Level_index = 1;
         for (;; Level_index++)
         {
-            if (!File.Exists("Assets/levels/" + Level_index.ToString()))
+            if (!File.Exists(Application.dataPath+"/levels/" + Level_index.ToString()))
             {
                 break;
             }
         }
 
-        FileStream file = File.Create("Assets/levels/" + Level_index.ToString());
+        FileStream file = File.Create(Application.dataPath +"/levels/" + Level_index.ToString());
         bf.Serialize(file, this);
         file.Close();
     }
@@ -101,10 +100,10 @@ public class Serialize
         GameObject TransTool = GameObject.Find("TransformTool_unbaked_(Clone)");
         if (TransTool != null)
             GameObject.Destroy(TransTool.gameObject);
-        if (File.Exists("Assets/levels/" + num.ToString()))
+        if (File.Exists(Application.dataPath + "/levels/" + num.ToString()))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open("Assets/levels/" + num.ToString(), FileMode.Open);
+            FileStream file = File.Open(Application.dataPath + "/levels/" + num.ToString(), FileMode.Open);
             Serialize loadData = (Serialize) bf.Deserialize(file);
             file.Close();
             for (int i = 0; i < loadData.Transform.Length; i++)
@@ -160,15 +159,11 @@ public class Serialize
 
     public int[] LoadLevel(int num, Material LevelBlock, Material LevelBlockFade)
     {
-        if (!File.Exists("Assets/levels/" + num.ToString()))
-        {
-            Debug.LogError("No Such Level File: " + num);
-        }
-
+        TextAsset t = Resources.Load<TextAsset>(num.ToString());
+        MemoryStream stream = new MemoryStream(t.bytes);
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open("Assets/levels/" + num.ToString(), FileMode.Open);
-        Serialize loadData = (Serialize) bf.Deserialize(file);
-        file.Close();
+        Serialize loadData = (Serialize) bf.Deserialize(stream);
+        stream.Close();
         Level _level = GameObject.FindObjectOfType<Level>();
         
         //you need a monobehavior to do this so why not the level obj
