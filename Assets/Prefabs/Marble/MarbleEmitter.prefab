@@ -46,4 +46,5 @@ MonoBehaviour:
   marblePrefab: {fileID: 6890009588089695467, guid: 6def65152ed8e4185a4eda3124a13f02,
     type: 3}
   rateOfFire: 1
-  initialVelocity: 0
+  lifeTime: 30
+  initialVelocity: 5

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using TreeEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Debug = UnityEngine.Debug;
@@ -16,12 +15,16 @@ using Debug = UnityEngine.Debug;
 
 public class availableFace : MonoBehaviour
 {
+    private Qubit _qubit;
     private Collider _collider;
     private MeshRenderer _renderer;
     private Transform _transform;
     private Color hoverColor;
     private Color restColor;
     private Color editColor;
+    private Color selectColor;
+    private Color invalidColor;
+
     //this is where  a block should be placed if this face
     // is clicked on
     private Vector3 pointsTowards; 
@@ -35,9 +38,11 @@ public class availableFace : MonoBehaviour
         _renderer = GetComponent<MeshRenderer>();
         _transform = GetComponent<Transform>();
         // DONE: transparency
-        hoverColor = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+        hoverColor = new Color(0.1f, 0.4f, 0.1f, 0.5f);
         restColor = new Color(0.0f, 0.0f, 1.0f, 0.0f);
         editColor = new Color(0.0f, 1.0f, 0.0f, 0.2f);
+        selectColor = new Color(0.0f, 0.6f, 0.8f, 0.3f);
+        invalidColor = new Color(0.7f, 0.2f, 0.2f, 0.7f);
         _renderer.material.color = restColor;
         if ( transform.parent.name == "QFloor(Clone)" || transform.parent.name == "QFloor")
         {
@@ -52,7 +57,6 @@ public class availableFace : MonoBehaviour
         
         // This is to set where the block gets placed
         // when the face is clicked "pointsTowards"
-        Qubit _qubit;
         if (transform.parent.name == "availableFaces")
         {  //any Qubit except QFloor
             _qubit = transform.parent.parent.gameObject.GetComponent<Qubit>();
@@ -61,7 +65,8 @@ public class availableFace : MonoBehaviour
         { //QFloor
             _qubit = transform.parent.gameObject.GetComponent<Qubit>();
         }
-        var newIndex = _qubit.index;
+        // var newIndex = _qubit.index;
+        var newIndex = new Vector3();
         switch (transform.name)
         {
             case "availableFront": 
@@ -101,13 +106,28 @@ public class availableFace : MonoBehaviour
         editState state = _editor.GetState();
         if (state == editState.Create)
         {
-            _renderer.material.color = hoverColor;
-            _editor.GhostBlock.transform.position = _editor.indexToPosition(pointsTowards);
+//            _renderer.material.color = hoverColor;
+            _editor.GhostBlock.transform.position = _editor.indexToPosition(_qubit.index + pointsTowards);
         }
-        else if (_renderer.material.color == hoverColor)
+        /*else
         {
-            _renderer.material.color = restColor;
+            if (transform.parent.childCount > 1)
+            {
+                if (_editor._selected != _qubit.gameObject)
+                {
+                    for (var i = 0; i < transform.parent.childCount; i++)
+                    {
+                        transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color =
+                            hoverColor;
+                    }
+                }
+            }
+            else
+            {
+                _renderer.material.color = restColor;
+            }
         }
+*/
 
     }
 
@@ -120,6 +140,24 @@ public class availableFace : MonoBehaviour
         {
             _renderer.material.color = restColor;
         }
+        if (transform.parent.childCount > 1)
+        {
+            for (var i = 0; i < transform.parent.childCount; i++)
+            {
+                if (state == editState.Edit && transform.parent.parent.gameObject == _editor._selected)
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = editColor;
+                }
+                else
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = restColor;
+                }
+            }
+        }
+        else
+        {
+
+        }
     }
 
     private void OnMouseOver()
@@ -128,11 +166,84 @@ public class availableFace : MonoBehaviour
         editState state = _editor.GetState();
         if (state == editState.Create)
         {
-            _renderer.material.color = hoverColor;
+            if (_editor.level != null)
+            {
+                switch (_editor.placingQubit.name)
+                {
+                    case "QRails-v4":
+                        if (_editor.level.GetResource(0) == 0)
+                            _renderer.material.color = invalidColor;
+                        else
+                        {
+                            _renderer.material.color = hoverColor;
+                        }
+                        break;
+                    case "QTurn-v3":
+                        if (_editor.level.GetResource(1) == 0)
+                            _renderer.material.color = invalidColor;
+                        else
+                        {
+                            _renderer.material.color = hoverColor;
+                        }
+                        break;
+                    case "QSlant-v4":
+                        if (_editor.level.GetResource(2) == 0)
+                            _renderer.material.color = invalidColor;
+                        else
+                        {
+                            _renderer.material.color = hoverColor;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                _renderer.material.color = hoverColor;
+            }
         }
-        else if (_renderer.material.color == hoverColor)
+        else
+        {
+            if (_editor._selected == _qubit.gameObject)
+            {
+                for (var i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color =
+                        editColor;
+                }
+            }
+            else if (transform.parent.childCount > 1 && !_qubit.editable)
+            {
+                for (var i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color =
+                        selectColor;
+                }
+            }
+            else
+            {
+                _renderer.material.color = restColor;
+            }
+        }
+    }
+
+    public void OnModeSwitch(editState state)
+    {
+        if (state == editState.Create)
         {
             _renderer.material.color = restColor;
+        }
+        else
+        {
+            if (transform.parent.childCount > 1)
+            {
+                for (var i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color =
+                        restColor;
+                }
+            }
         }
     }
 
@@ -153,20 +264,24 @@ public class availableFace : MonoBehaviour
                 if (clicked_object == "QFloor(Clone)" || clicked_object == "QFloor (1)")
                 {
                     //editor.PlaceQubit(_transform.position + Vector3.up * 5f);
-                    _editor.PlaceQubitByIndex(transform.parent.GetComponent<Qubit>().index);
+                    _editor.PlaceQubitByIndex(_qubit.index);
                 }
             }
             else
             {
-                var newIndex = pointsTowards;
+                var newIndex = _qubit.index + pointsTowards;
                 //editor.PlaceQubit(newPos);
                 _editor.PlaceQubitByIndex(newIndex);
             }
             _renderer.material.color = restColor;
             //editor.SetState(editState.Edit);
         }
-        else if (state == editState.Edit)
+        else if (state == editState.Edit || state == editState.Rest)
         {
+            if (state == editState.Rest)
+            {
+                _editor.SetState(editState.Edit);
+            }
             if (_editor._selected)
             {
                 _editor._selected.GetComponent<Qubit>().Deselect();
@@ -175,7 +290,8 @@ public class availableFace : MonoBehaviour
             // Make sure we're not selecting part of the editor
             if (!this.transform.parent.transform.parent.gameObject.GetComponent<Editor>())
             {
-                _editor._selected = this.transform.parent.transform.parent.gameObject;
+                //_editor._selected = transform.parent.transform.parent.gameObject;
+                _editor.SelectQubit(transform.parent.transform.parent.gameObject);
 
                 for (int i = 0; i < transform.parent.childCount; i++)
                 {

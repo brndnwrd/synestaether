@@ -23,7 +23,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1133573919680704549}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 04caccf976c75764aa6b8ed24fac446f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -78,6 +78,7 @@ MonoBehaviour:
   editable: 0
   index: {x: 0, y: 0, z: 0}
   availableFaces: []
+  _editor: {fileID: 0}
 --- !u!1001 &2865351157487571204
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85,6 +86,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1209040524124473237}
     m_Modifications:
+    - target: {fileID: 2804900750119264228, guid: b5adc34bdf140454ca5ff269448dc3bc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bd543787ac7d68f4bbc521f97ac807d7, type: 2}
     - target: {fileID: 2916228965494038817, guid: b5adc34bdf140454ca5ff269448dc3bc,
         type: 3}
       propertyPath: m_Name

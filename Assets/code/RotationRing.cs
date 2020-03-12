@@ -16,6 +16,7 @@ public class RotationRing : MonoBehaviour
     private Color hoverColor;
 
     private float destRot; // destination rotation, lerp to this number
+    private bool shouldUpdateCam = true;
     
     private bool _isDrag;
     private Vector3 _dragLast;
@@ -35,26 +36,32 @@ public class RotationRing : MonoBehaviour
         // atleast for debug I'm using colors green/red
         // _renderer.enabled = false; will make it disappear
         // ideally we get a wireframe shader material thing, there are free ones around
-        baseColor = new Color(0.2f, 0.7f, 1.0f, 0.7f);
-        hoverColor = new Color(0.3f, 0.8f, 1.0f, 0.9f);
-        _renderer.material.color = baseColor;
     }
 
     public void SetRotationDestination(float newAngle)
     {
-        destRot = newAngle;
+        if (shouldUpdateCam)
+        {
+            destRot = newAngle;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (shouldUpdateCam)
+        {
+            UpdateCam();
+        }
+    }
+
+    private void UpdateCam()
+    {
         float currRot = cameraParent.transform.rotation.eulerAngles.y;
-        
         if (_isDrag)
         {
             destRot += (_dragLast.x - Input.mousePosition.x)/100f;
         }
-
         var newRotQuat = Quaternion.Slerp(
             Quaternion.Euler(0f, currRot, 0f),
             Quaternion.Euler(0f, destRot, 0f),
@@ -63,16 +70,32 @@ public class RotationRing : MonoBehaviour
         cameraParent.transform.rotation = newRotQuat;
     }
 
+    /*
+     * This function sets whether or not players interaction
+     * will effect the camera rotation. (state == true) => UI will work.
+     * The value sets where the camera's "destination" will be when it
+     * is allowed to update again.
+     */
+    public void SetUpdateCam(bool state, float value)
+    {
+        shouldUpdateCam = state;
+        destRot = value;
+    }
+
     private void OnMouseOver()
     {
-        GetComponent<Renderer>().material.color = hoverColor;
+        var newCol = GetComponent<Renderer>().material.color;
+        newCol.a = 1.0f;
+        GetComponent<Renderer>().material.color = newCol;
     }
 
     private void OnMouseExit()
     {
         if (!_isDrag)
         {
-            GetComponent<Renderer>().material.color = baseColor;
+            var newCol = GetComponent<Renderer>().material.color;
+            newCol.a = 0.6f;
+            GetComponent<Renderer>().material.color = newCol;
         }
     }
 
@@ -85,6 +108,8 @@ public class RotationRing : MonoBehaviour
     private void OnMouseUp()
     {
         _isDrag = false;
-        GetComponent<Renderer>().material.color = baseColor;
+        var newCol = GetComponent<Renderer>().material.color;
+        newCol.a = 0.6f;
+        GetComponent<Renderer>().material.color = newCol;
     }
 }

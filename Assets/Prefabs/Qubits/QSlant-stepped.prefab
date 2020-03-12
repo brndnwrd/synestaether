@@ -48,6 +48,7 @@ MonoBehaviour:
   editable: 0
   index: {x: 0, y: 0, z: 0}
   availableFaces: []
+  _editor: {fileID: 0}
 --- !u!1 &4998336207156018351
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +109,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 763ffa9894b554721a8be9332805b940, type: 3}
+  - {fileID: 2100000, guid: bd543787ac7d68f4bbc521f97ac807d7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -136,7 +137,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4998336207156018351}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 04caccf976c75764aa6b8ed24fac446f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
